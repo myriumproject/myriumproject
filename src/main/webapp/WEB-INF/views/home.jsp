@@ -26,6 +26,8 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/views/main/header.jsp" %>
+<%@ include file="/WEB-INF/views/main/slider.jsp" %>
+<%@ include file="/WEB-INF/views/main/timesale.jsp" %>
 	<script>
 		const swiper = new Swiper('.topAdSwiper', {
 			direction : 'vertical',
