@@ -11,11 +11,36 @@
       height: 70%;
       display: flex;
     }
+
     .swiper-slide {
       width: 24%;
     }
+
     .timesaleSliderIn {
       cursor: pointer;
+      text-align: center; /* 글씨 가운데 정렬 */
+    }
+
+    .timesaleSliderIn img {
+      width: 100%;
+      height: auto;
+    }
+
+    .originalPrice {
+      color: gray;
+      font-size: 0.9em;
+    }
+
+    .salePrice {
+      font-weight: bold;
+    }
+
+    .timeSaleWrap {
+      padding: 20px;
+    }
+
+    .timeSale h2 {
+      margin: 0;
     }
   </style>
 </head>
@@ -25,12 +50,69 @@
     <div class="timeSale">
       <h2>🕙 타/임/세/일</h2>
       <p>바로 지금이 제일 저렴해요!</p>
-
       <div class="swiper" id="timesale-swiper">
         <div class="swiper-wrapper" id="timesale-container">
-          <!-- AJAX로 아이템이 추가될 영역 -->
+          <div class="swiper-slide timesaleSliderIn">
+        	  <img src="resources/img/gardening/cilantro/cilantro_01.jpg" alt="1000" />
+              <h6>1000</h6>
+              <p class="content">1000</p>
+              <p class="originalPrice"><s>1000원</s></p>
+              <p class="salePrice">
+                <span style="color: #e32e15">1000</span>
+                1000원
+              </p>
+            </div>
+            <div class="swiper-slide timesaleSliderIn">
+        	  <img src="resources/img/gardening/cilantro/cilantro_02.jpg" alt="1000" />
+              <h6>1000</h6>
+              <p class="content">1000</p>
+              <p class="originalPrice"><s>1000원</s></p>
+              <p class="salePrice">
+                <span style="color: #e32e15">1000</span>
+                1000원
+              </p>
+            </div>
+            <div class="swiper-slide timesaleSliderIn">
+        	  <img src="resources/img/gardening/cilantro/cilantro_03.jpg" alt="1000" />
+              <h6>1000</h6>
+              <p class="content">1000</p>
+              <p class="originalPrice"><s>1000원</s></p>
+              <p class="salePrice">
+                <span style="color: #e32e15">1000</span>
+                1000원
+              </p>
+            </div>
+            <div class="swiper-slide timesaleSliderIn">
+        	  <img src="resources/img/gardening/cilantro/cilantro_04.jpg" alt="1000" />
+              <h6>1000</h6>
+              <p class="content">1000</p>
+              <p class="originalPrice"><s>1000원</s></p>
+              <p class="salePrice">
+                <span style="color: #e32e15">1000</span>
+                1000원
+              </p>
+            </div>
+            <div class="swiper-slide timesaleSliderIn">
+        	  <img src="resources/img/gardening/cilantro/cilantro_01.jpg" alt="1000" />
+              <h6>1000</h6>
+              <p class="content">1000</p>
+              <p class="originalPrice"><s>1000원</s></p>
+              <p class="salePrice">
+                <span style="color: #e32e15">1000</span>
+                1000원
+              </p>
+            </div>
+            <div class="swiper-slide timesaleSliderIn">
+        	  <img src="resources/img/gardening/cilantro/cilantro_02.jpg" alt="1000" />
+              <h6>1000</h6>
+              <p class="content">1000</p>
+              <p class="originalPrice"><s>1000원</s></p>
+              <p class="salePrice">
+                <span style="color: #e32e15">1000</span>
+                1000원
+              </p>
+            </div>
         </div>
-        <div class="swiper-pagination"></div>
       </div>
     </div>
   </div>
@@ -38,53 +120,25 @@
   <!-- Swiper JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-  <script>
-    fetch("https://notuna87.github.io/noh_myrium_json/timesale.json")
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById("timesale-container");
+<script>
+  new Swiper("#timesale-swiper", {
+    spaceBetween: 10,
+    slidesPerView: 4,
+    loop: false,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    autoplay: {
+      delay: 4000,
+    },
+  });
 
-        data.forEach(item => {
-          const disPrice = Math.round(item.price * (1 - item.discount / 100));
-          const slide = document.createElement("div");
-          slide.className = "swiper-slide";
-
-          slide.innerHTML = `
-            <div class="timesaleSliderIn" onclick="goToDetail(${item.id})">
-              <img src="/noh_myrium/${item.imgUrl[0]}" alt="${item.title}" />
-              <h6>${item.title}</h6>
-              <p class="content">${item.content}</p>
-              <p class="originalPrice"><s>${item.price.toLocaleString()}원</s></p>
-              <p class="salePrice">
-                <span style="color: #e32e15">${item.discount}%</span>
-                ${disPrice.toLocaleString()}원
-              </p>
-            </div>
-          `;
-
-          container.appendChild(slide);
-        });
-
-        new Swiper("#timesale-swiper", {
-        	  spaceBetween: 10,
-        	  slidesPerView: 4,
-        	  loop: true,
-        	  pagination: {
-        	    el: "#timesale-pagination", // 이 부분도 ID로!
-        	    clickable: true,
-        	  },
-        	  autoplay: {
-        	    delay: 4000,
-        	  },
-        	});
-      })
-      .catch(err => console.error(err));
-
-    function goToDetail(id) {
-      location.href = "/detail/timesale/" + id;
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  </script>
+  function goToDetail(id) {
+    location.href = "/detail/timesale/" + id;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+</script>
 
 </body>
 </html>
