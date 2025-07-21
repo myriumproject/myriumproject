@@ -6,6 +6,7 @@ log4j.xml
 
 lecture
 target
+target/*
 pom.properties
 .classpath
 MANIFEST.MF
