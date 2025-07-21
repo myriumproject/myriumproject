@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -36,4 +37,8 @@ public class HomeController {
 		return "home";
 	}
 	
+    @GetMapping("/home")
+    public String goHome() {
+        return "home"; //complete.jsp 메인으로 버튼 클릭 시 home.jsp 이동 코드 추가함 by.gny
+    }
 }
