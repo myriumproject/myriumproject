@@ -16,7 +16,7 @@
     }
     .sliderText {
       position: absolute;
-      left: 0;
+      left: 10%;
       top: 50%;
       transform: translateY(-50%);
       width: 50%;

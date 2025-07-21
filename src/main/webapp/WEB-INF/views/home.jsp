@@ -19,10 +19,10 @@
   <!-- 상단 광고 배너 Swiper -->
   <div class="topAdSwiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" style="">
+      <div class="swiper-slide" style="width:100%">
         <a href="#">📸 사진리뷰 쓰고, 1,000원 받아가세요!</a>
       </div>
-      <div class="swiper-slide">
+      <div class="swiper-slide" style="width:100%">
         <a href="#">🎉 회원 가입하고 30,000원 쿠폰팩 즉시 받기 ✨</a>
       </div>
     </div>
