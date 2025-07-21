@@ -30,6 +30,7 @@
 			<h2>미리 만나는 봄 🌱</h2>
 			<p>마이리움 식물키트</p>
 			<div class="springProductwrap" id="springProductwrap">
+				<c:forEach var="i" begin="0" end="8">
 				<div class="springProduct">
 					<img src="resources/img/flower/babysbreath/babysbreath_01.jpg" alt="1" style="width: 100%; height: auto;" />
 					<h4>임시</h4>
@@ -41,89 +42,42 @@
 						<span style="color: #e32e15; margin-right: 5px;">임시할인률%</span>임시 원
 					</p>
 				</div>
-				<div class="springProduct">
-					<img src="resources/img/flower/babysbreath/babysbreath_02.jpg" alt="1" style="width: 100%; height: auto;" />
-					<h4>임시</h4>
-					<p class="springContent">임시</p>
-					<p class="originalPrice">
-						<s>1000원</s>
-					</p>
-					<p class="salePrice">
-						<span style="color: #e32e15; margin-right: 5px;">임시할인률%</span>임시 원
-					</p>
-				</div>
-				<div class="springProduct">
-					<img src="resources/img/flower/babysbreath/babysbreath_03.jpg" alt="1" style="width: 100%; height: auto;" />
-					<h4>임시</h4>
-					<p class="springContent">임시</p>
-					<p class="originalPrice">
-						<s>1000원</s>
-					</p>
-					<p class="salePrice">
-						<span style="color: #e32e15; margin-right: 5px;">임시할인률%</span>임시 원
-					</p>
-				</div>
-				<div class="springProduct">
-					<img src="resources/img/flower/babysbreath/babysbreath_04.jpg" alt="1" style="width: 100%; height: auto;" />
-					<h4>임시</h4>
-					<p class="springContent">임시</p>
-					<p class="originalPrice">
-						<s>1000원</s>
-					</p>
-					<p class="salePrice">
-						<span style="color: #e32e15; margin-right: 5px;">임시할인률%</span>임시 원
-					</p>
-				</div>
-				<div class="springProduct">
-					<img src="resources/img/flower/babysbreath/babysbreath_05.jpg" alt="1" style="width: 100%; height: auto;" />
-					<h4>임시</h4>
-					<p class="springContent">임시</p>
-					<p class="originalPrice">
-						<s>1000원</s>
-					</p>
-					<p class="salePrice">
-						<span style="color: #e32e15; margin-right: 5px;">임시할인률%</span>임시 원
-					</p>
-				</div>
-				<div class="springProduct">
-					<img src="resources/img/flower/babysbreath/babysbreath_06.jpg" alt="1" style="width: 100%; height: auto;" />
-					<h4>임시</h4>
-					<p class="springContent">임시</p>
-					<p class="originalPrice">
-						<s>1000원</s>
-					</p>
-					<p class="salePrice">
-						<span style="color: #e32e15; margin-right: 5px;">임시할인률%</span>임시 원
-					</p>
-				</div>
+				</c:forEach>
 			</div>
-			<button class="more" id="loadMoreBtn">상품 더보기</button>
+			<button class="more" id="springLoadMoreBtn">상품 더보기</button>
 		</div>
 	</div>
 
 	<script>
-    let items = [];
-    let visibleCount = 6;
- 
-      const btn = document.getElementById("loadMoreBtn");
-      if (visibleCount >= items.length) {
-        btn.style.display = "none";
-      } else {
-        btn.innerText = `상품 더보기 ${Math.ceil((visibleCount - 3) / 3)}/${Math.ceil((items.length - 6) / 3)}`;
-      }
-    }
+		(function () {
+			let springVisibleCount = 3;
 
-    function goToDetail(id) {
-      location.href = "/detail/kit/" + id;
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+			function springLoadMore() {
+				const springProducts = document.querySelectorAll(".springProduct");
+				const total = springProducts.length;
 
-    document.getElementById("loadMoreBtn").addEventListener("click", () => {
-      visibleCount = Math.min(visibleCount + 3, items.length);
-      renderItems();
-    });
+				for (let i = springVisibleCount; i < springVisibleCount + 3 && i < total; i++) {
+					springProducts[i].style.display = "block";
+				}
 
-    loadData();
-  </script>
+				springVisibleCount += 3;
+
+				if (springVisibleCount >= total) {
+					document.getElementById("springLoadMoreBtn").style.display = "none";
+				}
+			}
+
+			window.addEventListener("DOMContentLoaded", function () {
+				const springProducts = document.querySelectorAll(".springProduct");
+
+				// 초기 상태: 3개만 보이게 설정
+				springProducts.forEach((product, index) => {
+					if (index >= 3) product.style.display = "none";
+				});
+
+				document.getElementById("springLoadMoreBtn").addEventListener("click", springLoadMore);
+			});
+		})();
+	</script>
 </body>
 </html>

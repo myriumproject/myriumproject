@@ -32,6 +32,9 @@
   <%@ include file="/WEB-INF/views/main/spring.jsp" %>
   <%@ include file="/WEB-INF/views/main/howgrow.jsp" %>
   <%@ include file="/WEB-INF/views/main/myriumstory.jsp" %>
+  <%@ include file="/WEB-INF/views/main/ceopick.jsp" %>
+  <%@ include file="/WEB-INF/views/main/advertise.jsp" %>
+  <%@ include file="/WEB-INF/views/main/footer.jsp" %>
   <!-- 상단 광고 Swiper 인스턴스 초기화 -->
   <script>
     new Swiper('.topAdSwiper', {

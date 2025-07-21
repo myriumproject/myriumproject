@@ -469,6 +469,7 @@ a .fontWhite {
   color: #333;
   font-weight: 500;
   cursor: pointer;
+  display:block;
 }
 
 /*마이리움 스토리 끝*/
