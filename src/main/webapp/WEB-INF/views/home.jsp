@@ -1,6 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
 <html>
 <head>
   <title>Home</title>
@@ -31,6 +29,7 @@
   <%@ include file="/WEB-INF/views/main/header.jsp" %>
   <%@ include file="/WEB-INF/views/main/slider.jsp" %>
   <%@ include file="/WEB-INF/views/main/timesale.jsp" %>
+  <%@ include file="/WEB-INF/views/main/spring.jsp" %>
 
   <!-- 상단 광고 Swiper 인스턴스 초기화 -->
   <script>

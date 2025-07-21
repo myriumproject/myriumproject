@@ -7,7 +7,7 @@
   <style>
     .swiperWrap {
       width: 100%;
-      height: 800px;
+      height: 100%;
       margin-bottom : -200px;
     }
     .swiper-slide {
@@ -104,7 +104,6 @@
       <!-- Navigation buttons -->
       <div class="swiper-button-next"></div>
       <div class="swiper-button-prev"></div>
-      <div class="swiper-pagination"></div>
     </div>
   </div>
 
