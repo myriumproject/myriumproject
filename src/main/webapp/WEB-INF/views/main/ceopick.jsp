@@ -52,17 +52,17 @@
 			<div class="ceopickProductwrap">
 				<c:forEach var="i" begin="0" end="11">
 
-				<div class="ceopickProduct">
-					<img src="resources/img/flower/babysbreath/babysbreath_01.jpg" alt="임시" />
-					<h4>임시</h4>
-					<p class="ceopickConten">임시</p>
-					<p class="originalPric">
-						임시 원</s>
-					</p>
-					<p class="ceosalePrice">
-						<span style="color: #e32e15; margin-right: 5px;">임시 %</span>
-					</p>
-				</div>
+					<div class="ceopickProduct">
+						<img src="resources/img/flower/babysbreath/babysbreath_01.jpg" alt="임시" />
+						<h4>임시</h4>
+						<p class="ceopickConten">임시</p>
+						<p class="originalPric">
+							임시 원</s>
+						</p>
+						<p class="ceosalePrice">
+							<span style="color: #e32e15; margin-right: 5px;">임시 %</span>
+						</p>
+					</div>
 				</c:forEach>
 			</div>
 

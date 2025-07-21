@@ -91,21 +91,29 @@
 		</div>
 	</div>
 	<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		const menu = document.querySelector(".menu-wrap");
-		const categoryMenu = document.querySelector(".categoryMenu");
+		document
+				.addEventListener(
+						"DOMContentLoaded",
+						function() {
+							const menu = document.querySelector(".menu-wrap");
+							const categoryMenu = document
+									.querySelector(".categoryMenu");
 
-		if (menu) {
-			menu.addEventListener("click", function () {
-				menu.classList.toggle("open");
-				if (categoryMenu) {
-					categoryMenu.style.display =
-						categoryMenu.style.display === "block" ? "none" : "block";
-				}
-			});
-		}
-	});
-</script>
+							if (menu) {
+								menu
+										.addEventListener(
+												"click",
+												function() {
+													menu.classList
+															.toggle("open");
+													if (categoryMenu) {
+														categoryMenu.style.display = categoryMenu.style.display === "block" ? "none"
+																: "block";
+													}
+												});
+							}
+						});
+	</script>
 </body>
 
 </html>

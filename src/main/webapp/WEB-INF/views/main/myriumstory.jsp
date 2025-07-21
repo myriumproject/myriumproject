@@ -5,8 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>myriumstory</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
 </head>
 <body>
 	<div>
