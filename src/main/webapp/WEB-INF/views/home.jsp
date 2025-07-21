@@ -30,7 +30,8 @@
   <%@ include file="/WEB-INF/views/main/slider.jsp" %>
   <%@ include file="/WEB-INF/views/main/timesale.jsp" %>
   <%@ include file="/WEB-INF/views/main/spring.jsp" %>
-
+  <%@ include file="/WEB-INF/views/main/howgrow.jsp" %>
+  <%@ include file="/WEB-INF/views/main/myriumstory.jsp" %>
   <!-- 상단 광고 Swiper 인스턴스 초기화 -->
   <script>
     new Swiper('.topAdSwiper', {
