@@ -16,9 +16,10 @@
 				</a>
 			</div>
 			<ul class="loginWrap">
+				<li><a href="#">관리자 페이지</a>
 				<li><a href="#">주문조회</a></li>
-				<li><a href="#" class="liMiddle">로그인</a></li>
-				<li><a href="#">회원가입</a></li>
+				<li><a href="#">로그인</a></li>
+				<li><a href="#" class="loginWrapLastchild">회원가입</a></li>
 			</ul>
 		</div>
 
