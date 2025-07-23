@@ -1,5 +1,7 @@
 package com.myrium.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.myrium.domain.ProductDTO;
 import com.myrium.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -52,7 +55,14 @@ public class HomeController {
 	
     @GetMapping("/")
     public String goHome(Model model) {
-	    model.addAttribute("productList", productservice.getProductWithThumbnailList());
+    	
+        List<ProductDTO> ceoPickList = productservice.getProductWithThumbnailList("ceopick");
+        List<ProductDTO> springList = productservice.getProductWithThumbnailList("spring");
+        List<ProductDTO> timesaleList = productservice.getTimesaleWithThumbnailList();
+        
+	    model.addAttribute("ceopickList", ceoPickList);
+	    model.addAttribute("springList", springList);
+	    model.addAttribute("timesaleList",timesaleList);
 	    return "home";
     }
     @GetMapping("/admin")

@@ -50,7 +50,7 @@
 			<h2>👩‍🌾사장님's PICK</h2>
 			<p>놓치면 후회!</p>
 			<div class="ceopickProductwrap">
-				<c:forEach var="item" items="${productList}">
+				<c:forEach var="item" items="${ceopickList}">
 
 				<div class="ceopickProduct">
 					<img src="resources/img/${item.thumbnail.img_path}" alt="임시" />

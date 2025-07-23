@@ -22,10 +22,10 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductMapper productmapper;
 
-	// ceopick 목록 불러오기
+	// controller에서 지정한 카테고리에 해당하는 목록 불러오기
 	@Override
-	public List<ProductDTO> getProductWithThumbnailList() {
-		List<ProductVO> products = productmapper.getproductList();
+	public List<ProductDTO> getProductWithThumbnailList(String category) {
+		List<ProductVO> products = productmapper.getproductList(category);
 		List<ProductDTO> productDTOs = new ArrayList<>();
 
 		for (ProductVO product : products) {
@@ -37,7 +37,20 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return productDTOs;
 	}
-	
-	
+
+	@Override
+	public List<ProductDTO> getTimesaleWithThumbnailList() {
+		List<ProductVO> products = productmapper.gettimesaleList();
+		List<ProductDTO> productDTOs = new ArrayList<>();
+
+		for (ProductVO product : products) {
+			ImgpathVO thumbnail = productmapper.getThumbnail(product.getId());
+			ProductDTO dto = new ProductDTO();
+			dto.setProduct(product);
+			dto.setThumbnail(thumbnail);
+			productDTOs.add(dto);
+		}
+		return productDTOs;
+	}
 
 }
