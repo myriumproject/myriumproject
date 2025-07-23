@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="getThumbnail" resultType ="com.myrium.domain.ImgpathVO">
-		select * from img_path where product_id = #{productid} AND is_thumbnail = 1
+		SELECT * FROM ( SELECT * FROM img_path WHERE product_id = #{productid} AND is_thumbnail = 1 ORDER BY id) WHERE ROWNUM = 1
 	</select>
 
 </mapper>
