@@ -13,11 +13,15 @@ import com.myrium.domain.ProductVO;
 @Mapper
 public interface ProductMapper {
 	
-	// 사장님의 선택 카테고리 목록 불러오기
-	public List<ProductVO> getceoPickList();
-	
 	// 썸네일 불러오기
 	public ImgpathVO getThumbnail(int productid);
+		
+	// 사장님의 선택 카테고리 목록 불러오기
+	public List<ProductVO> getproductList();
+	
+	public List<ProductVO> getspringList();
+	
+	
 	
 }
 

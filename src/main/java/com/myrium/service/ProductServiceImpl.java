@@ -22,9 +22,10 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductMapper productmapper;
 
+	// ceopick 목록 불러오기
 	@Override
 	public List<ProductDTO> getProductWithThumbnailList() {
-		List<ProductVO> products = productmapper.getceoPickList();
+		List<ProductVO> products = productmapper.getproductList();
 		List<ProductDTO> productDTOs = new ArrayList<>();
 
 		for (ProductVO product : products) {
@@ -36,5 +37,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return productDTOs;
 	}
+	
+	
 
 }
