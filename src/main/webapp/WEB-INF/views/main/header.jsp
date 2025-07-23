@@ -17,9 +17,9 @@
 			</div>
 			<ul class="loginWrap">
 				<li><a href="${pageContext.request.contextPath}/admin">관리자</a></li> <!-- admin test -->
-				<li><a href="#">주문조회</a></li>
-				<li><a href="#">로그인</a></li>
-				<li><a href="#" class="loginWrapLastchild">회원가입</a></li>
+				<li><a href="${pageContext.request.contextPath}/mypage">주문조회</a></li>
+				<li><a href="${pageContext.request.contextPath}/login">로그인</a></li>
+				<li><a href="${pageContext.request.contextPath}/join" class="loginWrapLastchild">회원가입</a></li>
 			</ul>
 		</div>
 
@@ -41,7 +41,7 @@
 								<li><a href="#">FAQ</a></li>
 							</ul>
 						</div></li>
-					<li><a href="${pageContext.request.contextPath}/board">고객게시판</a></li>
+					<li><a href="${pageContext.request.contextPath}/board/list">고객게시판</a></li>
 				</ul>
 			</div>
 
@@ -87,7 +87,11 @@
 						<li class="categorymenuSmall">공지사항</li>
 					</ul>
 				</li>
-				<li>고객게시판</li>
+				<li>고객게시판
+					<ul>
+						<li><a class="categorymenuSmall" href="${pageContext.request.contextPath}/board/list">게시판</a></li>
+					</ul>
+				</li>
 			</ul>
 		</div>
 	</div>

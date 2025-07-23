@@ -145,6 +145,8 @@
   </form>
 </div>
 
+ <%@ include file="/WEB-INF/views/main/footer.jsp" %>
+
 <script> const ctx = "${pageContext.request.contextPath}"; </script>
 <script src="${pageContext.request.contextPath}/resources/js/join_terms.js"></script>
 

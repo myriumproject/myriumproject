@@ -1,0 +1,330 @@
+.container {
+    max-width: 1000px;
+    padding: 0 20px;
+    margin: 0 auto;
+  }
+  
+  .page-title {
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 1px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .profile-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .profile-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-icon img {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+  
+  .profile-info {
+    margin-left: 20px;
+  }
+  
+  .profile-info .welcome {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  .profile-info .level {
+    font-size: 14px;
+    color: #777;
+    margin-top: 4px;
+  }
+  
+  .benefit-info {
+    font-size: 14px;
+    color: #777;
+    text-align: right;
+    max-width: 320px;
+  }
+  
+  .event-box {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border: 1px solid #eee;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+/*기본정보 입력란*/
+.member_form_table {
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: '맑은 고딕', sans-serif;
+  }
+  
+  .member_form_table > h2 {
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 40px;
+    border-bottom: 1px solid #000;
+  }
+
+  .form_row {
+    display: flex;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .form_row label {
+    width: 180px;
+    font-weight: bold;
+    padding-top: 10px;
+    flex-shrink: 0;
+  }
+  
+  .form_input {
+    flex: 1;
+  }
+  
+  .input_full,
+  .form_input input[type="text"],
+  .form_input input[type="password"],
+  .form_input select {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  .form_input input.half_input {
+    width: 50%;
+    max-width: 300px;
+  }
+  
+
+  .form_input .short_input {
+    width: 25% !important;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-right: 6px;
+  }
+
+  input[readonly] {
+    background-color: #f9f9f9;
+    color: #777;
+    cursor: not-allowed;
+  }
+  
+  .address_line {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .phone_wrap {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: nowrap; 
+  }
+
+  .phone_select,
+  .phone_input {
+    width: 100px !important;
+    padding: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  .btn_search,
+  .btn_cert {
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #000;
+    font-size: 14px;
+    border-radius: 6px; 
+    cursor: pointer;
+    white-space: nowrap;
+    height: 38px; 
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  
+
+  .required {
+    color: red;
+    margin-left: 4px;
+  }
+  
+  .desc {
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
+  }
+  
+/*추가입력*/
+
+.additional_info_table {
+    max-width: 1000px;
+    margin: 40px auto;
+    font-family: '맑은 고딕', sans-serif;
+  }
+  
+  .additional_info_table h2 {
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .additional_info_table .form_row {
+    display: flex;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .additional_info_table .form_row label {
+    width: 180px;
+    font-weight: bold;
+    padding-top: 10px;
+    flex-shrink: 0;
+  }
+  
+  .additional_info_table .form_input {
+    flex: 1;
+  }
+  
+  .additional_info_table .input_full {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  .birth_wrap {
+    display: flex;
+    flex-direction: column; 
+    gap: 8px;
+  }
+
+  .birth_wrap label {
+    margin-left: 5px !important;
+    font-size: 14px;
+  }
+  
+  .birth_inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+
+  .birth_input {
+    width: 100px !important;
+    padding: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  .calendar_select {
+    display: flex;
+    gap: 5px;
+    font-size: 14px;
+  }
+  
+
+  .additional_info_table .desc {
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
+  }
+  
+
+  /*약관동의*/
+  .terms_section {
+    max-width: 1000px;
+    margin: 40px auto;
+    font-family: '맑은 고딕', sans-serif;
+  }
+  
+  .terms_item {
+    margin-bottom: 30px;
+  }
+  
+  .checkbox_label {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .terms_box {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 16px;
+    height: 140px;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  /*최종버튼*/
+
+  .form_buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px auto;
+    max-width: 1000px;
+  }
+  
+  .btn_cancel_account {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .btn_right_group {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn_cancel {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .btn_submit {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
