@@ -8,11 +8,6 @@ import com.myrium.domain.ProductVO;
 
 
 public interface ProductService {
-	
-	public List<ProductVO> getProductList();
-	
-	public ImgpathVO getThumbnail(int productid);
-	
 	public List<ProductDTO> getProductWithThumbnailList();
 
 }

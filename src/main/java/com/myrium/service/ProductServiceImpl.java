@@ -23,20 +23,8 @@ public class ProductServiceImpl implements ProductService {
 	private ProductMapper productmapper;
 
 	@Override
-	public List<ProductVO> getProductList() {
-		log.info("getList..");
-		return productmapper.getProductList();
-	}
-
-	@Override
-	public ImgpathVO getThumbnail(int productid) {
-		log.info("getthumbnail..");
-		return productmapper.getThumbnail(productid);
-	}
-
-	@Override
 	public List<ProductDTO> getProductWithThumbnailList() {
-		List<ProductVO> products = productmapper.getProductList();
+		List<ProductVO> products = productmapper.getceoPickList();
 		List<ProductDTO> productDTOs = new ArrayList<>();
 
 		for (ProductVO product : products) {
