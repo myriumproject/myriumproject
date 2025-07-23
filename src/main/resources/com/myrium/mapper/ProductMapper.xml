@@ -4,8 +4,12 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.myrium.mapper.ProductMapper">
 
-	<select id="getList" resultType="com.myrium.domain.ProductVO">
-		select * from product
+	<select id="getProductList" resultType="com.myrium.domain.ProductVO">
+		select * from product where category = 'ceopick'
+	</select>
+	
+	<select id="getThumbnail" resultType ="com.myrium.domain.ImgpathVO">
+		select * from img_path where product_id = #{productid} AND is_thumbnail = 1
 	</select>
 
 </mapper>

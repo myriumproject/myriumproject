@@ -29,7 +29,7 @@ public class ProductMapperTest {
 	
 	@Test
 	public void testGetList() {
-	    List<ProductVO> list = mapper.getList();
+	    List<ProductVO> list = mapper.getProductList();
 	    log.info("product count: " + list.size());
 	    list.forEach(product -> log.info(product));
 	}
