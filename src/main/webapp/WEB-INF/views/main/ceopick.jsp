@@ -76,7 +76,6 @@
 								<fmt:formatNumber value="${item.product.discount_price}" type="number" groupingUsed="true" />원
 							</p>
 						</c:if>
-
 						<!-- 타임세일 중일 경우 하단에 출력 -->
 						<c:if test="${item.product.is_timesales == 1}">
 							<p class="timesaleOntext">🕙타임세일중인 상품입니다 지금 쟁여두세요!</p>

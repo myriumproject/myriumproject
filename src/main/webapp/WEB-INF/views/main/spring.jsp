@@ -34,6 +34,7 @@
 					<div class="springProduct">
 						<img src="resources/img/${item.thumbnail.img_path}" alt="1" style="width: 100%; height: auto; margin-bottom:12px;" />
 						<h4>${item.product.product_name}</h4>
+          
 						<p class="mainProductContent">${item.product.product_content}</p>
 						
 						<!-- 할인중인 가격이 null 값일 때 판매가만 출력 -->
