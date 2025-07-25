@@ -30,7 +30,7 @@
 	</resultMap>
 
 	<resultMap type="com.myrium.domain.AuthVO" id="authMap">
-		<result property="customerId" column="customer_id" />
+		<result property="userId" column="user_id" />
 		<result property="role" column="role" />
 	</resultMap>
 
@@ -118,7 +118,7 @@
 		m.updated_at,
 		m.updated_by,
 
-		a.customer_id AS auth_customer_id,
+		a.user_id AS auth_customer_id,
 		a.role AS auth_role
 
 		FROM member m
