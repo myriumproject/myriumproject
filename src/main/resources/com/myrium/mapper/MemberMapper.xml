@@ -55,6 +55,7 @@
 		SYSDATE, #{createdBy}
 		)
 	</insert>
+  
 	<!-- 회원 권한 등록 -->
 	<insert id="insertAuth" parameterType="com.myrium.domain.AuthVO">
 		INSERT INTO member_auth (user_id, role)
@@ -70,6 +71,7 @@
 	<!-- 전체 회원 조회 -->
 	<select id="getAllMembers" resultMap="memberMap">
 		SELECT * FROM member ORDER BY id
+
 	</select>
 
 	<!-- 회원 정보 수정 -->
@@ -90,8 +92,7 @@
 		UPDATE member SET is_deleted = 1 WHERE id = #{id}
 	</update>
 
-	<select id="selectByCustomerId"
-		resultType="com.myrium.domain.MemberVO">
+	<select id="selectByCustomerId" resultMap="memberMap">
 		SELECT * FROM member WHERE customer_id = #{customerId}
 	</select>
 
@@ -125,7 +126,5 @@
 		LEFT JOIN member_auth a ON m.id = a.user_id
 		WHERE m.customer_id = #{customerId}
 	</select>
-
-
-
+	
 </mapper>
