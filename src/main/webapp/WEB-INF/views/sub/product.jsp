@@ -1,12 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
 <html>
 <head>
 <title></title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 <!-- reset css  -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sub.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css">
 </head>
 
 <body>
@@ -96,19 +99,24 @@
 				</div>
 			</div>
 			<p style="margin-bottom: 20px;">
-				총 구매 금액 <span id="totalPrice" style="float: right; font-size: 22px; font-weight: bold; color: #e32e15;"> 원
-				</span>
-
-
+				총 구매 금액 <span id="totalPrice" style="float: right; font-size: 22px; font-weight: bold; color: #e32e15;"> 원 </span>
 			</p>
 
-			<form action="/cart/add" method="post">
-				<button type="submit" class="inCart">장바구니</button>
-			</form>
+				<sec:authorize access="!isAuthenticated()">
+					<button type="submit" class="inCart" id="cartLinkNotLoggedIn">장바구니</button>
+					<div class="purchase" id="purchaseLinkNotLoggedIn">구매하기</div>
+				</sec:authorize>
+				<sec:authorize access="isAuthenticated()">
+					<form action="/cart" method="post">
+						<button type="submit" class="inCart">장바구니</button>
+						<div class="purchase">구매하기</div>
+					</form>
+				</sec:authorize>
 
-			<div class="purchase">구매하기</div>
+			<input id="totalPriceHidden" name="totalPrice" type="hidden" value="">
 		</div>
 	</div>
+
 
 	<!-- Swiper JS -->
 	<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
@@ -133,43 +141,31 @@
 			},
 		});
 
-		// 장바구니 담기용 증감 버튼
-		function increaseQty() {
-			const qtyInput = document.getElementById("quantity");
-			qtyInput.value = parseInt(qtyInput.value) + 1;
-		}
-
-		function decreaseQty() {
-			const qtyInput = document.getElementById("quantity");
-			if (parseInt(qtyInput.value) > 1) {
-				qtyInput.value = parseInt(qtyInput.value) - 1;
-			}
-		}
-
-
 		// 서버에서 넘어온 할인 가격을 JS에서 사용
 		const discountPrice = ${product.discount_price};
 		const productPrice = ${product.product_price};
 		const qtyInput = document.getElementById("quantity");
 		const totalPriceSpan = document.getElementById("totalPrice");
 
-		
-			function updateNotSaleTotalPrice() {
-				const qty = parseInt(qtyInput.value);
-				const total = productPrice * qty;
-				totalPriceSpan.textContent = total.toLocaleString() + " 원";
-			}
+		function updateNotSaleTotalPrice() {
+			const qty = parseInt(qtyInput.value);
+			const total = productPrice * qty;
+			totalPriceSpan.textContent = total.toLocaleString() + " 원";
+			document.getElementById("totalPriceHidden").value = total;
+		}
 
-			function updateTotalPrice() {
-				const qty = parseInt(qtyInput.value);
-				const total = discountPrice * qty;
-				totalPriceSpan.textContent = total.toLocaleString() + " 원";
-			}
+		function updateTotalPrice() {
+			const qty = parseInt(qtyInput.value);
+			const total = discountPrice * qty;
+			totalPriceSpan.textContent = total.toLocaleString() + " 원";
+			document.getElementById("totalPriceHidden").value = total;
+
+		}
 
 		function increaseQty() {
 			qtyInput.value = parseInt(qtyInput.value) + 1;
-			if(discountPrice == 0){
-				updateNotSaleTotalPrice();			
+			if (discountPrice == 0) {
+				updateNotSaleTotalPrice();
 			} else {
 				updateTotalPrice();
 			}
@@ -178,21 +174,45 @@
 		function decreaseQty() {
 			if (parseInt(qtyInput.value) > 1) {
 				qtyInput.value = parseInt(qtyInput.value) - 1;
-        
-				
-				if(discountPrice == 0){
-					updateNotSaleTotalPrice();			
+				if (discountPrice == 0) {
+					updateNotSaleTotalPrice();
 				} else {
 					updateTotalPrice();
 				}
 			}
 		}
-		
-		if(discountPrice == 0){
-			 document.addEventListener("DOMContentLoaded", updateNotSaleTotalPrice);
+
+		if (discountPrice == 0) {
+			document.addEventListener("DOMContentLoaded",
+					updateNotSaleTotalPrice);
 		} else {
-			 document.addEventListener("DOMContentLoaded", updateTotalPrice);
+			document.addEventListener("DOMContentLoaded", updateTotalPrice);
 		}
+
+		
+		
+		// 로그인 확인
+		
+		document.addEventListener("DOMContentLoaded", function() {
+			const cartLink = document.getElementById('cartLinkNotLoggedIn');
+			const purchaseLink = document.getElementById('purchaseLinkNotLoggedIn');
+			
+			if (cartLink) {
+				cartLink.addEventListener('click', function(e) {
+					e.preventDefault();
+					alert("로그인 후 이용해주세요.");
+					location.href = "${pageContext.request.contextPath}/login";
+				});
+			}
+			if (purchaseLink) {
+				purchaseLink.addEventListener('click', function(e) {
+					e.preventDefault();
+					alert("로그인 후 이용해주세요.");
+					location.href = "${pageContext.request.contextPath}/login";
+				});
+			}
+
+		});
 	</script>
 </body>
 </html>
