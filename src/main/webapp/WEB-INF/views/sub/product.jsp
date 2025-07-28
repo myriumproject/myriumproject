@@ -99,7 +99,9 @@
 				</div>
 			</div>
 			<p style="margin-bottom: 20px;">
+
 				총 구매 금액 <span id="totalPrice" style="float: right; font-size: 22px; font-weight: bold; color: #e32e15;"> 원 </span>
+
 			</p>
 
 				<sec:authorize access="!isAuthenticated()">
@@ -141,6 +143,19 @@
 			},
 		});
 
+		// 장바구니 담기용 증감 버튼
+		function increaseQty() {
+			const qtyInput = document.getElementById("quantity");
+			qtyInput.value = parseInt(qtyInput.value) + 1;
+		}
+
+		function decreaseQty() {
+			const qtyInput = document.getElementById("quantity");
+			if (parseInt(qtyInput.value) > 1) {
+				qtyInput.value = parseInt(qtyInput.value) - 1;
+			}
+		}
+
 		// 서버에서 넘어온 할인 가격을 JS에서 사용
 		const discountPrice = ${product.discount_price};
 		const productPrice = ${product.product_price};
@@ -173,9 +188,10 @@
 
 		function decreaseQty() {
 			if (parseInt(qtyInput.value) > 1) {
-				qtyInput.value = parseInt(qtyInput.value) - 1;
-				if (discountPrice == 0) {
-					updateNotSaleTotalPrice();
+				qtyInput.value = parseInt(qtyInput.value) - 1;        
+				
+				if(discountPrice == 0){
+					updateNotSaleTotalPrice();			
 				} else {
 					updateTotalPrice();
 				}
