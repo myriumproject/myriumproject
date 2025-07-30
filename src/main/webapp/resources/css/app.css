@@ -977,6 +977,7 @@ padding: 40px;
 .cartCount {
   float: left;
   background-color: #fff;
+  display :flex;
 }
 
 .cartCount .buttonPlus,

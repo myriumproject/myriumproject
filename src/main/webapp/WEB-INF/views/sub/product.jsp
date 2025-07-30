@@ -13,6 +13,7 @@
 </head>
 
 <body>
+<form action="/cart" method="post">
 	<div class="detailWrap">
 		<!-- 썸네일 Swiper -->
 		<div class="swiper gallery-thumbs">
@@ -94,7 +95,7 @@
 				<p style="width: 100%;">${product.product_name}</p>
 				<div class="creaseButton">
 					<button type="button" onclick="decreaseQty()">-</button>
-					<input type="number" id="quantity" value="1" min="1" readonly />
+					<input type="number" name="quantity" id="quantity" value="1" min="1" readonly />
 					<button type="button" onclick="increaseQty()">+</button>
 				</div>
 			</div>
@@ -109,15 +110,14 @@
 					<div class="purchase" id="purchaseLinkNotLoggedIn">구매하기</div>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
-					<form action="/cart" method="post">
 						<button type="submit" class="inCart">장바구니</button>
 						<div class="purchase">구매하기</div>
-					</form>
 				</sec:authorize>
 
-			<input id="totalPriceHidden" name="totalPrice" type="hidden" value="">
+			<input id="productIdHidden" name="productId" type="hidden" value="${product.id}">
 		</div>
 	</div>
+</form>
 
 
 	<!-- Swiper JS -->
@@ -166,15 +166,12 @@
 			const qty = parseInt(qtyInput.value);
 			const total = productPrice * qty;
 			totalPriceSpan.textContent = total.toLocaleString() + " 원";
-			document.getElementById("totalPriceHidden").value = total;
 		}
 
 		function updateTotalPrice() {
 			const qty = parseInt(qtyInput.value);
 			const total = discountPrice * qty;
 			totalPriceSpan.textContent = total.toLocaleString() + " 원";
-			document.getElementById("totalPriceHidden").value = total;
-
 		}
 
 		function increaseQty() {
