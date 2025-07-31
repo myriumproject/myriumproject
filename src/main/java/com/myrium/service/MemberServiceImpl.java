@@ -26,19 +26,27 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void register(MemberVO memberVO) {
-        // 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(memberVO.getPassword());
-        memberVO.setPassword(encodedPassword);
 
-        // 회원 정보 insert
-        memberMapper.insertMember(memberVO);
+        try {
+            // 비밀번호 암호화
+            String encodedPassword = passwordEncoder.encode(memberVO.getPassword());
+            memberVO.setPassword(encodedPassword);
 
-        // 권한 정보 insert
-        AuthVO authVO = new AuthVO();
-        authVO.setUserId(memberVO.getId());  // 시퀀스로 생성된 ID
-        authVO.setRole("MEMBER");            // 기본 권한
-        memberMapper.insertAuth(authVO);
+            // 회원 정보 insert
+            memberMapper.insertMember(memberVO);
+ 
+            // 권한 정보 insert
+            AuthVO authVO = new AuthVO();
+            authVO.setUserId(memberVO.getId());
+            authVO.setRole("MEMBER");
+
+            memberMapper.insertAuth(authVO);
+
+        } catch (Exception e) {
+            throw e; 
+        }
     }
+
 
     // 회원 단건 조회
     @Override
@@ -123,4 +131,24 @@ public class MemberServiceImpl implements MemberService {
         return sb.toString();
     }
     
+    //비밀번호 변경
+    @Override
+    public void updatePassword(String customerId, String encodedPassword) {
+        memberMapper.updatePassword(customerId, encodedPassword);
+    }
+    @Override
+    public MemberVO getMemberByCustomerId(String customerId) {
+        return memberMapper.readByCustomerId(customerId);
+    }
+    
+    //회원정보수정
+    @Override
+    public void updateMemberInfo(MemberVO member) {
+        memberMapper.updateMemberInfo(member);  // 여기 중요
+    }
+    
+    @Override
+    public MemberVO readById(long id) {
+        return memberMapper.readById(id);
+    }
 }

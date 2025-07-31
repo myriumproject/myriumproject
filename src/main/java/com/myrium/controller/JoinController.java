@@ -38,6 +38,7 @@ public class JoinController {
 	    if (!member.getPassword().equals(passwordConfirm)) {
 	        model.addAttribute("pwMatchError", "비밀번호가 일치하지 않습니다.");
 	        return "join/join";
+
 	    }
 
 	    // 2. 휴대폰 번호 조합
@@ -48,9 +49,9 @@ public class JoinController {
 	    member.setPhoneNumber(fullPhone);
 
 	    // 3. 주소 조합 + null 체크
-	    String postcode = request.getParameter("postcode");
-	    String roadAddress = request.getParameter("roadAddress");
-	    String detailAddress = request.getParameter("detailAddress");
+	    String postcode = request.getParameter("zipcode");
+	    String roadAddress = request.getParameter("addr1");
+	    String detailAddress = request.getParameter("addr2");
 
 	    if (postcode == null || roadAddress == null || detailAddress == null ||
 	        postcode.trim().isEmpty() || roadAddress.trim().isEmpty() || detailAddress.trim().isEmpty()) {
@@ -58,12 +59,13 @@ public class JoinController {
 	        return "join/join";
 	    }
 
-	    String fullAddress = "(" + postcode + ") " + roadAddress + " " + detailAddress;
-	    member.setAddress(fullAddress);
-	    
-	    log.info("fullAddress"+fullAddress);
-	    log.info("detailAddress"+detailAddress);
-	    log.info("roadAddress"+roadAddress);
+	    member.setZipcode(postcode);
+	    member.setAddr1(roadAddress);
+	    member.setAddr2(detailAddress);
+
+	    // 필요하다면 기존 address 필드도 함께 구성
+	    member.setAddress("(" + postcode + ") " + roadAddress + " " + detailAddress);  // 선택
+
 	    // 4. 생년월일 조합
 	    String birthYear = request.getParameter("birthYear");
 	    String birthMonth = request.getParameter("birthMonth");
@@ -80,11 +82,11 @@ public class JoinController {
 	    }
 
 	    // 5. 약관 동의 항목 (체크박스 name 속성에 따라 처리)
-	    member.setAgreePrivacy(request.getParameter("agreeTerms") != null ? 1 : 0);
+	    member.setAgreeTerms(request.getParameter("agreeTerms") != null ? 1 : 0);
 	    member.setAgreePrivacy(request.getParameter("agreePrivacy") != null ? 1 : 0);
 	    member.setAgreeThirdParty(request.getParameter("agreeThirdParty") != null ? 1 : 0);
 	    member.setAgreeDelegate(request.getParameter("agreeDelegate") != null ? 1 : 0);
-	    member.setAgreePrivacy(request.getParameter("agreeSms") != null ? 1 : 0);
+	    member.setAgreeSms(request.getParameter("agreeSms") != null ? 1 : 0);
 
 	    // 6. 시스템 기본값 설정
 	    member.setIsDeleted(0);
