@@ -36,49 +36,41 @@
 		</div>
 
 		<!-- 장바구니 목록 -->
-		<c:forEach var="item" items="${cart}">
-			<c:set var="disprice" value="${item.price - (item.price * item.discount / 100)}" />
+		<c:forEach var="item" items="${cartList}">
+			<c:set var="disprice" value="1" />
 
 			<div class="cartContentsWrap">
 				<!-- 상품 이미지 -->
 				<div class="cartImgWrap">
-					<a href="${pageContext.request.contextPath}/detail/${item.kind}/${item.id}"> <img class="cartImg" src="${pageContext.request.contextPath}/resources/img/${item.imgurl[0]}" alt="${item.name}" />
+					<a href="#"> <img class="cartImg" src="${pageContext.request.contextPath}/resources/img/${item.thumbnail.img_path}" />
 					</a>
 				</div>
 
 				<!-- 상품 정보 및 조작 버튼 -->
 				<div class="cartContents">
-					<div class="cartTitle">${item.name}</div>
+					<div class="cartTitle">${item.product.product_name}</div>
 					<div class="cartPrice">
-						<s><fmt:formatNumber value="${item.price}" type="number" />원</s>
+						<s><fmt:formatNumber value="${item.product.product_price}" type="number" groupingUsed="true" />원</s>
 					</div>
 					<div class="cartPrice" style="color: red; font-weight: bold;">
-						${item.discount}%
-						<fmt:formatNumber value="${disprice}" type="number" />
+						${item.product.total_discountrate}%
+						<fmt:formatNumber value="${item.product.discount_price}" type="number" />
 						원
 					</div>
 					<div class="cartDelivery">배송: 3,000원[조건] / 기본배송</div>
 
-					<!-- 수량 조절 버튼 (기능은 JavaScript로 연결해야 함) -->
 					<div class="cartCount">
-						<form action="/cart/decrease" method="post" style="display: inline;">
-							<input type="hidden" name="id" value="${item.id}" />
-							<button type="submit" class="buttonPlus">-</button>
-						</form>
-
-						<p>${item.count}</p>
-
-						<form action="/cart/increase" method="post" style="display: inline;">
-							<input type="hidden" name="id" value="${item.id}" />
-							<button type="submit" class="buttonMinus">+</button>
-						</form>
+						<button type="button" class="buttonMinus" onclick="changeQuantity('decrease', this)" data-product-id="${item.product.id}">-</button>
+						<input type="number" name="quantity" id="quantity" value="${item.inCart.quantity}" min="1" readonly />
+						<button type="button" class="buttonPlus" onclick="changeQuantity('increase', this)" data-product-id="${item.product.id}">+</button>
 					</div>
 
+
+
 					<!-- 상품 삭제 -->
-					<form action="/cart/delete" method="post">
-						<input type="hidden" name="id" value="${item.id}" />
-						<button type="submit" class="productDel">상품삭제</button>
-					</form>
+					<div class="cartDelete">
+						<button type="submit" class="productDel" onclick="deleteProduct('increase', this)" data-product-id="${item.product.id}">상품삭제</button>
+					</div>
 				</div>
 			</div>
 		</c:forEach>
@@ -98,4 +90,86 @@
 	</div>
 	<%@ include file="/WEB-INF/views/main/footer.jsp"%>
 </body>
+
+<script>
+  // 수량 변경 함수
+  function changeQuantity(action, button) {
+    const container = button.closest('.cartCount');
+    const qtyInput = container.querySelector('input[name="quantity"]');
+    const productId = button.getAttribute('data-product-id');
+
+    let currentQty = parseInt(qtyInput.value);
+
+    if (action === 'increase') {
+      currentQty += 1;
+    } else if (action === 'decrease' && currentQty > 1) {
+      currentQty -= 1;
+    } else {
+      return;
+    }
+
+    // UI에 수량 반영
+    qtyInput.value = currentQty;
+
+    // AJAX 요청 보내기 (서버에 수량 업데이트)
+    fetch('/cart/updateQuantity', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]')?.getAttribute('content') || '' // CSRF 토큰
+      },
+      body: JSON.stringify({
+        productId: productId,
+        quantity: currentQty
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('서버 오류 발생');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('수량 업데이트 성공:', data);
+      // 여기에 총 금액 다시 계산해서 표시할 수도 있음
+    })
+    .catch(error => {
+      console.error('수량 업데이트 실패:', error);
+      alert('수량 변경에 실패했습니다.');
+    });
+  }
+  
+  function deleteProduct(action, button) {
+	  	const productContainer = button.closest('.cartContentsWrap');
+	    const container = button.closest('.cartDelete');
+	    const productId = button.getAttribute('data-product-id');
+
+	    // AJAX 요청 보내기 (서버에 수량 업데이트)
+	    fetch('/cart/delete', {
+	      method: 'POST',
+	      headers: {
+	        'Content-Type': 'application/json',
+	        'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]')?.getAttribute('content') || '' // CSRF 토큰
+	      },
+	      body: JSON.stringify({
+	        productId: productId
+	      })
+	    })
+	    .then(response => {
+	      if (!response.ok) {
+	        throw new Error('서버 오류 발생');
+	      }
+	      return response.json();
+	    })
+	    .then(data => {
+	      console.log('삭제완료', data);
+	      productContainer.remove();
+	    })
+	    .catch(error => {
+	      console.error('삭제 실패:', error);
+	      alert('삭제에 실패했습니다.');
+	    });
+	  }
+</script>
+
 </html>

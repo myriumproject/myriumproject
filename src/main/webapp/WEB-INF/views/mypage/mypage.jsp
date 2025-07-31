@@ -8,9 +8,14 @@
   <title>마이 쇼핑</title>
  	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css" />
   	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css" />
+  	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/mypage.css" />
+	
+
 </head>
 <body>
+
+
   <%@ include file="../main/header.jsp" %>
 
   <div class="mypage-container">
@@ -33,7 +38,11 @@
         <ul>
           <li><a href="${pageContext.request.contextPath}/mypage/member_update">회원 정보 수정</a></li>
           <li><a href="${pageContext.request.contextPath}/mypage/change_password">비밀번호 변경</a></li>
-          <li><a href="${pageContext.request.contextPath}/home">로그아웃</a></li>
+			<li>
+			  <form action="${pageContext.request.contextPath}/logout" method="post" style="display:inline;" class="logout-form">
+			    <button type="submit" class="logout-btn">로그아웃</button>
+			  </form>
+			</li>
         </ul>
       </div>
       <button class="inquiry-btn">1:1 문의하기</button>

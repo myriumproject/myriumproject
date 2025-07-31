@@ -24,4 +24,11 @@ public interface MemberService {
 
     String findPasswordByPhone(String customerId, String customerName, String phoneNumber);
     
+    //비밀번호변경
+    void updatePassword(String customerId, String encodedPassword);
+    MemberVO getMemberByCustomerId(String customerId);
+    
+    //회원정보수정
+    void updateMemberInfo(MemberVO member);
+    public MemberVO readById(long id);
 }

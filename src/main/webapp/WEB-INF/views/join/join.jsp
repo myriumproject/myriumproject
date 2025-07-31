@@ -87,13 +87,16 @@
 
 	<div class="form_section address">
 	    <label>주소 <span class="required">*</span></label>
+	    
 	    <div class="address_group">
-	        <input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly />
+	        <input type="text" id="postcode" name="zipcode" placeholder="우편번호" readonly />
 	        <button type="button" onclick="execDaumPostcode()">주소검색</button>
 	    </div>
-	    <input type="text" id="roadAddress" name="roadAddress" placeholder="기본주소" readonly />
-	    <input type="text" id="detailAddress" name="detailAddress" placeholder="나머지 주소" />
+	    
+	    <input type="text" id="roadAddress" name="addr1" placeholder="기본주소" readonly />
+	    <input type="text" id="detailAddress" name="addr2" placeholder="나머지 주소" />
 	</div>
+
 
 
 	<div class="form_section phone">
@@ -106,9 +109,9 @@
 		  <option>018</option>
 		  <option>019</option>
 		</select> -
-		<input type="text" name="phone2" /> -
-		<input type="text" name="phone3" />
-	    <button type="button" id="sendCodeBtn">인증번호받기</button>
+		<input type="text" name="phone2" maxlength="4"/> -
+		<input type="text" name="phone3" maxlength="4"/>
+	    <button type="button" id="sendCodeBtn" class="btn_cert">인증번호받기</button>
 	  </div>
 	  <p class="success_msg" id="phoneConfirmMsg" style="display: none; margin-top: 6px;">인증번호 확인 되었습니다.</p>
 	</div>
