@@ -68,10 +68,9 @@
 
 
 					<!-- 상품 삭제 -->
-					<form action="/cart/delete" method="post">
-						<input type="hidden" name="id" value="1" />
-						<button type="submit" class="productDel">상품삭제</button>
-					</form>
+					<div class="cartDelete">
+						<button type="submit" class="productDel" onclick="deleteProduct('increase', this)" data-product-id="${item.product.id}">상품삭제</button>
+					</div>
 				</div>
 			</div>
 		</c:forEach>
@@ -139,6 +138,38 @@
       alert('수량 변경에 실패했습니다.');
     });
   }
+  
+  function deleteProduct(action, button) {
+	  	const productContainer = button.closest('.cartContentsWrap');
+	    const container = button.closest('.cartDelete');
+	    const productId = button.getAttribute('data-product-id');
+
+	    // AJAX 요청 보내기 (서버에 수량 업데이트)
+	    fetch('/cart/delete', {
+	      method: 'POST',
+	      headers: {
+	        'Content-Type': 'application/json',
+	        'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]')?.getAttribute('content') || '' // CSRF 토큰
+	      },
+	      body: JSON.stringify({
+	        productId: productId
+	      })
+	    })
+	    .then(response => {
+	      if (!response.ok) {
+	        throw new Error('서버 오류 발생');
+	      }
+	      return response.json();
+	    })
+	    .then(data => {
+	      console.log('삭제완료', data);
+	      productContainer.remove();
+	    })
+	    .catch(error => {
+	      console.error('삭제 실패:', error);
+	      alert('삭제에 실패했습니다.');
+	    });
+	  }
 </script>
 
 </html>

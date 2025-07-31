@@ -990,14 +990,14 @@ padding: 40px;
   cursor: pointer;
 }
 
-.cartCount p {
-  vertical-align: middle;
+.cartCount input {
   display: inline-block;
   width: 100px;
   height: 30px;
   align-content: center;
   text-align: center;
   border: 1px solid #e5e5e5;
+  padding-left : 15px;
 }
 
 .productDel {

@@ -58,4 +58,6 @@ public interface ProductMapper {
 	// 중복일시 update set
 	int updateQuantity(@Param("productId") Long productId, @Param("userId") Long userId,@Param("newQuantity") Integer newQuantity);
 
+	int deleteCart(@Param("productId") Long productId, @Param("userId") Long userId);
+
 }

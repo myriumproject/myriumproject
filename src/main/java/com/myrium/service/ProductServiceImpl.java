@@ -151,10 +151,13 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void updateQuantity(Long productId, Integer newQuantity, Long userId) {
 	    int updated = productmapper.updateQuantity(productId, userId, newQuantity);
-	    
-	    System.out.println("updateQuantity 호출: productId=" + productId + ", userId=" + userId + ", quantity=" + newQuantity);
-	    System.out.println("수정된 행 수: " + updated);
 	}
+
+	@Override
+	public void deleteCart(Long productId, Long userId) {
+		int deleted = productmapper.deleteCart(productId, userId);
+	}
+
 
 
 }
