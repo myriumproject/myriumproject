@@ -100,7 +100,8 @@
 	</div>
 	<%@ include file="/WEB-INF/views/main/footer.jsp"%>
 </body>
-
+<script src="${pageContext.request.contextPath}/resources/js/deleteProduct.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/updateTotalPrice.js"></script>
 <script>
   // 수량 변경 함수
   function changeQuantity(action, button) {
@@ -149,78 +150,6 @@
     });
   }
   
-  function deleteProduct(action, button) {
-	  	const productContainer = button.closest('.cartContentsWrap');
-	    const container = button.closest('.cartDelete');
-	    const productId = button.getAttribute('data-product-id');
-
-	    // AJAX 요청 보내기 (서버에 수량 업데이트)
-	    fetch('/cart/delete', {
-	      method: 'POST',
-	      headers: {
-	        'Content-Type': 'application/json',
-	        'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]')?.getAttribute('content') || '' // CSRF 토큰
-	      },
-	      body: JSON.stringify({
-	        productId: productId
-	      })
-	    })
-	    .then(response => {
-	      if (!response.ok) {
-	        throw new Error('서버 오류 발생');
-	      }
-	      return response.json();
-	    })
-	    .then(data => {
-	      console.log('삭제완료', data);
-	      productContainer.remove();
-	      updateTotalPrice();
-	    })
-	    .catch(error => {
-	      console.error('삭제 실패:', error);
-	      alert('삭제에 실패했습니다.');
-	    });
-	  }
-  
-  function updateTotalPrice(){
-	  console.log('🔄 updateTotalPrice() 호출됨');
-	  const productContainers = document.querySelectorAll('.cartContentsWrap');
-	  let total = 0;
-	  
-	  productContainers.forEach(container => {
-		  const priceE1 = container.querySelector('.productPrice');
-		  const qtyE1 = container.querySelector('.productQty');
-		  console.log("updateTotalPrice 호출됨");
-		  console.log("가격 데이터: ", priceE1?.getAttribute('data-price'));
-		  console.log("수량 데이터: ", qtyE1?.value);
-		  if (priceE1 && qtyE1) {
-			  console.log("if문 실행?");
-			  const price = parseInt(priceE1.getAttribute('data-price')) || 0;
-			  const qty = parseInt(qtyE1.value) || 1;
-			  
-			  console.log(price);
-			  console.log(qty);
-			  total += price * qty;
-			  
-
-			  console.log(total);
-		  }
-
-	  });
-	  if (total == 0){
-		  total = 0;
-	  } else if (total < 49900){
-		total += 3000;
-	  }
-	  
-	  const formattedTotal = total.toLocaleString(); // 3자리 단위 콤마
-	  document.querySelector('.cartTotal').innerHTML = `
-		<span style="font-weight: 400; float:right; font-size:13px;">배송비 3,000원(49,900원 이상 구매 시 무료)</span><br>
-	    <span style="font-size: 14px; margin-right: 30px;">결제예정금액</span>
-	    $${'{formattedTotal}'}원
-	  `;
-
-  }
   
   document.addEventListener("DOMContentLoaded", updateTotalPrice);
 </script>
