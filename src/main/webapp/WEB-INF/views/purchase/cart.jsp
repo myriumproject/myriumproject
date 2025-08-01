@@ -93,7 +93,7 @@
 		</div>
 
 		<!-- 주문 버튼 -->
-		<form action="/order/checkout" method="post">
+		<form action="/purchasepage" method="get">
 			<button type="submit" class="cartPurchase">주문하기</button>
 		</form>
 
