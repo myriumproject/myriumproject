@@ -26,8 +26,12 @@ public class OrderDTO {
 	    private String deliveryMsg; // 상품요청사항
 	    private String payment; // 결제
 	    private int productId;
+<<<<<<< HEAD
       private String orderDisplayId;
 	}
+=======
+	    private String orderDisplayId;
+>>>>>>> main
 
 
     public void setOrderDate(String orderDate) {

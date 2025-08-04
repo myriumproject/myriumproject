@@ -61,7 +61,11 @@ ORDER BY o.order_date DESC, o.orders_id
     #{address},
     #{zipcode},
     #{phoneNumber},
+<<<<<<< HEAD
     #{message},
+=======
+    #{deliveryMsg},
+>>>>>>> main
     #{payment},
     0,
     0,
