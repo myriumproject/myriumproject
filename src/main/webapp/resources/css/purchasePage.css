@@ -27,6 +27,7 @@ input:focus {
     height:45px;
     font-size: 15px;
     border : 1px solid #d9d9d9;
+
 }
 
 /* 공통 스타일 끝*/
@@ -78,7 +79,7 @@ section {
 
 .orderInfoContent {
     background-color: #fff;
-    border-bottom: 1px solid #d7d5d5;
+    height: 310px;
 }
 
 .orderInfoContent th {

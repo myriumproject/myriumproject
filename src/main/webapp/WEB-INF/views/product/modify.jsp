@@ -1,78 +1,93 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <%@include file="../main/header.jsp"%>
-<%@include file="../includes_admin/header.jsp"%>
+<%@include file="../includes_admin/header.jsp" %> 
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>공지사항 등록</title>
-<style>
-.uploadResult {
-	width: 100%;
-	background-color: lightgray;
-}
-
-.uploadResult ul {
-	display: flex;
-	flex-flow: row;
-	justify-content: center;
-	align-items: center;
-}
-
-.uploadResult ul li {
-	list-style: none;
-	padding: 10px;
-}
-
-.uploadResult ul li img {
-	width: 100px;
-}
-</style>
-
-</head>
 <body>
-	<div class="row">
-		<div class="col-lg-12">
-			<h1 class="page-header">공지사항 등록(관리자)</h1>
-		</div>
-	</div>
 
-	<!-- /.row -->
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">작성 후 등록 버튼을 클릭하세요.</div>
-				<!-- /.panel-heading -->
-				<div class="panel-body">
-					<form role="form" action="/notice/register" method="post" enctype="multipart/form-data">
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+<div class="row">
+     <div class="col-lg-12">
+        <sec:authorize access="hasAuthority('ADMIN')">
+        	<h1 class="page-header">공지사항 수정(관리자)</h1>
+        </sec:authorize>
+        <sec:authorize access="!hasAuthority('ADMIN')">
+        	<h1 class="page-header">공지사항 수정</h1>
+        </sec:authorize>
+    </div>
+</div>
 
-						<sec:authorize access="isAuthenticated()">
-							<input type="hidden" name="createdBy"
-								value='<sec:authentication property="principal.username"/>' />
-							<input type="hidden" name="userId"
-								value='<sec:authentication property="principal.member.id"/>' />
-						</sec:authorize>
+<!-- /.row -->
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">수정 후 수정 버튼을 클릭하세요.</div>
 
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<form role="form" action="/notice/modify" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
+					<input type='hidden' name='pageNum' value='${cri.pageNum}'>
+					<input type='hidden' name='amount' value='${cri.amount}'>
+					<input type='hidden' name='type' value='${cri.type}'>
+					<input type='hidden' name='keyword' value='${cri.keyword}'>
+					
+					<sec:authorize access="isAuthenticated()">
+						<input type="hidden" name="updatedBy" value='<sec:authentication property="principal.member.customerId"/>' />
+					</sec:authorize>
+					
+					<div class="form-group">
+					       <label>No.</label> 
+                           <input class="form-control" name='id' value="${notice.id}" readonly="readonly">
+					</div>
+
+					<div class="form-group">
+					      <label>제목</label> 	
+                      	  <input class="form-control" name='title' value="${notice.title}">
+					</div>
+
+					<div class="form-group">
+		                  <label>내용</label>
+					      <textarea class="form-control" rows="3" name='content'>${notice.content}</textarea>
+					</div>
+
+					<div class="form-group">
+					      <label>작성자</label> 
+                          <input class="form-control" name='customerId' value="${notice.customerId}" readonly="readonly">
+					</div>
+
+                   <sec:authentication property="principal" var="pinfo"/>
+					<c:choose>
+						<c:when test="${not empty attachFiles}">
+							<div class="form-group">
+						        <label>첨부파일</label>
+						        <ul class="list-group uploadList">
+						            <c:forEach items="${attachFiles}" var="file">
+						                <li class="list-group-item uploadedFile">
+											<a href="/download?uuid=${file.uuid}&path=${fn:replace(file.uploadPath, '\\', '/')}&filename=${file.fileName}">
+											    ${file.fileName}
+											</a>
+											<button type="button" id="fileDeleteBtn" class="btn btn-xs btn-danger remove-file-btn" data-uuid="${file.uuid}">삭제</button>
+						                </li>
+						            </c:forEach>
+						        </ul>
+						    </div>
+						</c:when>
+						<c:otherwise>
 						<div class="form-group">
-							<label>제목</label> <input class="form-control" name='title'>
-						</div>
-
-						<div class="form-group">
-							<label>내용</label>
-							<textarea class="form-control" rows="10" name='content'></textarea>
-						</div>
-
-						<div class="form-group">
-							<label>작성자</label> <input class="form-control" name="customerId"
-								value='<sec:authentication property="principal.username"/>' readonly="readonly">
-						</div>
-
+						        <label>첨부파일</label>
+							<ul class="list-group uploadList">
+								<li class="list-group">첨부파일이 없습니다.
+							</ul>
+							 </div>
+						</c:otherwise>
+					</c:choose>
+					
+					
 						<!-- 업로드 영역 -->
 						<div class="form-group">
 							<label class="form-label"><strong>첨부파일 업로드</strong></label>
@@ -92,21 +107,27 @@
 							</div>
 						</div>
 						
-						<input type="hidden" name="attachList" id="attachListJson"> 
-						
-						<div class="text-right mt-3">
-							<button type="submit" class="btn btn-success">등록</button>
-							<button type="reset" class="btn btn-warning" id="resetBtn">다시작성</button>
-						</div>
-					</form>
-				</div>
+					<input type="hidden" name="deleteFiles" id="deleteFiles">
+					<input type="hidden" name="attachList" id="attachListJson" >
+					<input type="hidden" name="userId" value="${notice.userId}">
+
+
+                   <div class="text-right mt-3">
+	   					<sec:authorize access="hasAuthority('ADMIN')">
+			            	<button type="submit" data-oper='modify' class="btn btn-success">등록</button>
+	                        <button type="submit" data-oper='remove' class="btn btn-danger">삭제</button>
+			            </sec:authorize>	
+						<button type="submit" data-oper='list' class="btn btn-info">목록</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
+</div>
 
 <!-- jQuery -->
 <script src="/resources/bsAdmin2/resources/vendor/jquery/jquery.min.js"></script>
-<script src="/resources/js/upload_manager.js"></script>
+<!-- <script src="/resources/js/upload_manager.js"></script> -->
 <script type="text/javascript">
 $(document).ready(function () {
   const csrfHeader = $("meta[name='_csrf_header']").attr("content");
@@ -114,7 +135,11 @@ $(document).ready(function () {
   
   var regex = new RegExp("(.*?)\\.(exe|sh|zip|alz)$", "i");
   var maxSize = 5242880; // 5MB
-
+  
+  // uploadedFile 갯수
+  const uploadedCount = document.querySelectorAll(".uploadedFile").length;  
+  console.log("uploadedCount:" + uploadedCount);
+  
   function checkExtension(fileName, fileSize) {
     const fileSizeMB = (fileSize / (1024 * 1024)).toFixed(2);
     const maxSizeMB = (maxSize / (1024 * 1024)).toFixed(2);
@@ -132,12 +157,13 @@ $(document).ready(function () {
     
     return true;
   }
-
+  
   // 선택된 파일 리스트를 전역에서 관리
   let selectedFiles = [];
   let uploadedFileList = []; // 업로드 완료된 파일 정보
   let uploadCompleted = false; // 업로드 완료 여부 flag
 
+  
   // 업로드 버튼 처음에 숨김
   $("#uploadBtn").hide(); 
   
@@ -146,11 +172,15 @@ $(document).ready(function () {
     const files = Array.from(e.target.files);
 
     // 최대 3개 제한
-    if (selectedFiles.length + files.length > 3) {
-      alert("❗ 최대 3개까지 파일을 업로드할 수 있습니다.");
-      $(this).val('');
-      return;
-    }
+    const totalCount = selectedFiles.length + document.querySelectorAll(".uploadedFile").length + files.length;
+	    
+    console.log("[uploadInput]totalCount:" + totalCount);
+	    
+    if (totalCount > 3) {
+	       alert("❗ 최대 3개까지 파일을 업로드할 수 있습니다.");
+	    $(this).val('');
+	    return;
+	  }
 
     files.forEach(file => {
       if (checkExtension(file.name, file.size)) {
@@ -175,6 +205,13 @@ $(document).ready(function () {
       alert("업로드할 파일을 먼저 선택해주세요.");
       return;
     }
+    
+    console.log("[uploadBtn]selectedFiles + uploadedFileList:" + (selectedFiles.length + document.querySelectorAll(".uploadedFile").length));
+    
+    if (selectedFiles.length + uploadedFileList.length > 3) {
+    	  alert("❗ 최대 3개까지 파일을 업로드할 수 있습니다.");
+    	  return;
+    	}
 
     const formData = new FormData();
     selectedFiles.forEach(file => formData.append("uploadFile", file));
@@ -197,7 +234,7 @@ $(document).ready(function () {
     	  console.log(JSON.stringify(result, null, 2));  // JSON 형식으로 보기 좋게 출력
     	  
     	  showUploadedFiles(result);
-    	  uploadedFileList = result;     // 업로드 완료된 파일 저장
+    	  uploadedFileList = uploadedFileList.concat(result); // 누적 저장 // 업로드 완료된 파일 저장
     	  selectedFiles = [];            // 선택 목록 초기화
     	  uploadCompleted = true;        // 업로드 완료 플래그 true
     	  setAttachListJson(result);     // 숨은 input에 JSON으로 저장
@@ -238,16 +275,15 @@ $(document).ready(function () {
 
       content.append($("<span>").text(file.name));
 
-	  const delBtnWrapper = $("<div>").addClass("text-right mt-3");
       const delBtn = $("<button type='button'>")
         .addClass("btn btn-sm btn-danger ml-2")
         .text("삭제")
-        .on("click", () => {
-        this.selectedFiles.splice(idx, 1);
-        this.updatePreviewList();
+        .on("click", function () {
+          selectedFiles.splice(index, 1); // 배열에서 제거
+          updateFileListUI();             // UI 다시 그림
         });
-	  delBtnWrapper.append(delBtn);
-      li.append(content, delBtnWrapper);
+
+      li.append(content).append(delBtn);
       list.append(li);
     });
   }
@@ -287,8 +323,11 @@ $(document).ready(function () {
 	      .hide() // 업로드 후 삭제버튼 숨김
 	      .on("click", function () {
 	        deleteFile(fileCallPath, obj.image ? "image" : "file", $(this).closest("li"));
+		    // 업로드 목록에서 제거 (UUID 기준)
+		    uploadedFileList = uploadedFileList.filter(file => file.uuid !== obj.uuid);
+		    setAttachListJson(uploadedFileList);
 	      });
-
+	    
 	    li.append(content).append(delBtn);
 	    list.append(li);
 	  });
@@ -342,21 +381,30 @@ $(document).ready(function () {
 	  $("#uploadList").empty(); // 업로드 리스트 UI 초기화
 	  $("#uploadInput").val(''); // 파일 input 초기화 (필수)
 	  $("#uploadBtn").hide(); // 업로드 후 숨김
+	  setAttachListJson([]); // 숨은 필드 초기화
 	});
   
-  // 뒤로가기 시 업로드 된 파일 삭제
-  window.addEventListener("beforeunload", function (e) {
-	  // 이미 업로드된 파일이 있을 경우에만 작동
-	  if (attachList.length > 0) {
-	    document.getElementById("resetBtn").click();
-	    e.preventDefault();
-	    e.returnValue = ""; // 겅고창 노출
-	  }
+  
+  let deleteFileUuids = [];
+  
+  $(".remove-file-btn").on("click", function () {
+	  const uuid = $(this).data("uuid");
+	  // uploadedFileList 에서 제거
+	  uploadedFileList = uploadedFileList.filter(file => file.uuid !== uuid);
+	  setAttachListJson(uploadedFileList);
+	  
+	  deleteFileUuids.push(uuid);
+	  $("#deleteFiles").val(deleteFileUuids.join(","));
+	  $(this).closest("li").remove();
 	});
+  
+  
+  var formObj = $("form");
   
   // 등록 버튼 클릭 시 유효성 검사
-  $("form").on("submit", function (e) {
-    const title = $("input[name='title']").val().trim();
+  $("form button[type=submit]").on("click", function (e) {
+	  
+	const title = $("input[name='title']").val().trim();
     const content = $("textarea[name='content']").val().trim();
 
     if (!title) {
@@ -379,14 +427,39 @@ $(document).ready(function () {
       e.preventDefault();
       return;
     }
+    
+	e.preventDefault();
+	
+	  const operation = $(this).data("oper");
+	
+	console.log(operation);
+	
+	if(operation === 'remove'){
+		if (confirm("삭제 후 복구할 수 없습니다. 정말 삭제하시겠습니까?")) {
+			formObj.attr("action", "/notice/harddel"); // 소프트 삭제 => softdel, 하드(영구) 삭제 => harddel 
+		}
+	}else if(operation === 'list'){
+		formObj.attr("action", "/notice/list").attr("method", "get");
+		var pageNumTag = $("input[name='pageNum']").clone();
+		var amountTag = $("input[name='amount']").clone();
+		var keywordTag = $("input[name='keyword']").clone();
+		var typeTag = $("input[name='type']").clone();
+		
+		formObj.empty();
+		formObj.append(pageNumTag);
+		formObj.append(amountTag);
+		formObj.append(keywordTag);
+		formObj.append(typeTag);
+	}
+	
+	formObj.submit();
+    
   });
 
 });
 </script>
-
+  
 </body>
 
-<%@include file="../includes_admin/footer.jsp"%>
+<%@include file="../includes_admin/footer.jsp" %> 
 <%@include file="../main/footer.jsp"%>
-
-</html>

@@ -1,6 +1,7 @@
 package com.myrium.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,6 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> getOrderListByCustomerId(String customerId) {
         return orderMapper.findOrdersByCustomerId(customerId);
     }
-
 
 	@Override
 	public int insertOrders(OrderDTO orders) {
@@ -40,4 +40,30 @@ public class OrderServiceImpl implements OrderService {
 		
 		orderMapper.deletePurchaseCart(userId, productid);
 	}
+    
+    // 교환/환불 데이터 조회 구현
+    @Override
+    public List<OrderDTO> getCanceledOrdersByCustomerId(String customerId) {
+        return orderMapper.selectCanceledOrdersByCustomerId(customerId);
+    }
+    
+    @Override
+    public List<Map<String, Object>> countOrdersByStatus(String customerId) {
+        return orderMapper.countOrdersByStatus(customerId);
+    }
+    
+    @Override
+    public int getTotalPaidOrderAmount(String customerId) {
+        return orderMapper.getTotalPaidOrderAmount(customerId);
+    }
+    
+    @Override
+    public List<OrderDTO> getOrderDetail(Long orderId) {
+        return orderMapper.findOrderDetailById(orderId);
+    }
+    
+    @Override
+    public int getValidOrderTotalAmount(Long orderId) {
+        return orderMapper.getValidOrderTotalAmount(orderId);
+    }
 }

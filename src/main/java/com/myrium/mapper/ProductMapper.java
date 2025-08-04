@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.myrium.domain.CartVO;
+import com.myrium.domain.CategoryVO;
 import com.myrium.domain.ImgpathVO;
 import com.myrium.domain.ProductVO;
 

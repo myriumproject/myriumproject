@@ -99,4 +99,5 @@
 	<update id="deleteCart">
 		UPDATE cart SET is_deleted = 1, quantity = 0 WHERE product_id = #{productId} AND user_id = #{userId}
 	</update>
+
 </mapper>

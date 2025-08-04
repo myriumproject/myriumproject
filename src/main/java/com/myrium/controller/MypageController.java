@@ -1,6 +1,9 @@
 package com.myrium.controller;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,16 +32,6 @@ public class MypageController {
 
 	@Autowired
 	private OrderService orderService;
-	
-//	@GetMapping("/mypage")
-//	public String showJoinform() {
-//		return "mypage/mypage";
-//	}
-	
-    @GetMapping("/mypage/order-history")
-    public String showOrderHistory() {
-        return "mypage/order_history";
-    }
     
     @GetMapping("/mypage/change_password")
     public String showchangepw() {
@@ -79,36 +72,127 @@ public class MypageController {
         return "mypage/member_update";
     }
     
+    //마이페이지 주문내역조회 
     @GetMapping("/mypage")
     public String showMypage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // 로그인 여부 확인
         if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
-            log.warn("🔴 로그인하지 않은 사용자입니다.");
-            return "redirect:/login"; // 또는 로그인 페이지로 리디렉트
+            return "redirect:/login";
         }
 
         String customerId = auth.getName(); // username (customerId)
         log.info("로그인 ID: " + customerId);
 
+        // 주문 내역 조회
         List<OrderDTO> orderList = orderService.getOrderListByCustomerId(customerId);
         log.info("주문 내역 수: " + orderList.size());
-        for (OrderDTO dto : orderList) {
-            log.info(dto.getOrderId() + " - " + dto.getProductName());
-        }
 
         // 주문 ID 기준으로 묶기
         Map<String, List<OrderDTO>> groupedOrders = new LinkedHashMap<>();
-        for (OrderDTO order : orderList) {
-            groupedOrders
-                .computeIfAbsent(order.getOrderId(), k -> new ArrayList<>())
-                .add(order);
+        for (OrderDTO dto : orderList) {
+            dto.setOrderDisplayId(); // 표시용 주문번호 설정
+            groupedOrders.computeIfAbsent(dto.getOrdersId(), k -> new ArrayList<>()).add(dto);
         }
 
         model.addAttribute("groupedOrders", groupedOrders);
+
+        // 주문 상태별 개수 조회 추가
+        List<Map<String, Object>> statusCounts = orderService.countOrdersByStatus(customerId);
+        Map<String, Integer> statusMap = new LinkedHashMap<>();
+        statusMap.put("입금전", 0);
+        statusMap.put("배송준비중", 0);
+        statusMap.put("배송중", 0);
+        statusMap.put("배송완료", 0);
+
+        for (Map<String, Object> row : statusCounts) {
+            String status = (String) row.get("ORDER_STATUS");
+            Object countObj = row.get("COUNT");
+
+            log.info("===> 상태 원본 값: [" + status + "]");
+            log.info("===> 카운트 원본 값: " + countObj);
+
+            int count = 0;
+
+            if (countObj instanceof BigDecimal) {
+                count = ((BigDecimal) countObj).intValue();
+            } else if (countObj instanceof Integer) {
+                count = (Integer) countObj;
+            } else if (countObj != null) {
+                try {
+                    count = Integer.parseInt(countObj.toString());
+                } catch (NumberFormatException e) {
+                    log.warn("count 변환 실패: " + countObj);
+                }
+            }
+
+            if (status != null && statusMap.containsKey(status)) {
+                statusMap.put(status, count);
+            } else {
+                log.warn("예상치 못한 상태값: " + status);
+            }
+
+            log.info(">> 정리된 상태명: " + status + ", 최종 개수: " + count);
+        }
+
+        
+        //총주문금액
+        int totalPaidAmount = orderService.getTotalPaidOrderAmount(customerId);
+        log.info("총주문 금액: " + totalPaidAmount);
+
+        model.addAttribute("totalPaidAmount", totalPaidAmount);
+
+ 
+        model.addAttribute("orderStatusMap", statusMap);
+
         return "mypage/mypage"; // mypage.jsp
     }
+
+    
+    //order_history 주문내역조회 구현
+    @GetMapping("/mypage/order-history")
+    public String goOrderHistoryPage(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+            return "redirect:/login";
+        }
+
+        String customerId = auth.getName();
+
+        // 주문 내역 조회
+        List<OrderDTO> orderList = orderService.getOrderListByCustomerId(customerId);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        for (OrderDTO dto : orderList) {
+            dto.setOrderDisplayId();
+            log.info("표시용 주문번호: " + dto.getOrderDisplayId());
+        }
+
+        
+        Map<String, List<OrderDTO>> groupedOrders = new LinkedHashMap<>();
+        for (OrderDTO order : orderList) {
+        	
+            groupedOrders.computeIfAbsent(order.getOrdersId(), k -> new ArrayList<>()).add(order);
+        }
+        model.addAttribute("groupedOrders", groupedOrders);
+        model.addAttribute("orderCount", orderList.size());
+
+        log.info(groupedOrders);
+        // 교환/환불 내역 조회
+        List<OrderDTO> cancelList = orderService.getCanceledOrdersByCustomerId(customerId);
+        Map<String, List<OrderDTO>> cancelGroupedOrders = new LinkedHashMap<>();
+        for (OrderDTO order : cancelList) {
+            order.setOrderDisplayId();
+            log.info("환불 주문번호 표시용 ID: " + order.getOrderDisplayId());
+            cancelGroupedOrders.computeIfAbsent(order.getOrdersId(), k -> new ArrayList<>()).add(order);
+        }
+        model.addAttribute("cancelGroupedOrders", cancelGroupedOrders);
+        model.addAttribute("cancelCount", cancelList.size());
+
+        return "mypage/order_history";
+    }
+
 
     }
     

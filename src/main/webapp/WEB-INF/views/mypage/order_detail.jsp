@@ -1,4 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +29,7 @@
 			<div class="sidebar-section">
 				<p>쇼핑 정보</p>
 				<ul>
-					<li>주문내역 조회</li>
+					<li><a href="${pageContext.request.contextPath}/mypage/order-history">주문내역 조회</a></li>
 				</ul>
 			</div>
 			<div class="sidebar-section">
@@ -57,109 +61,123 @@
 		<div class="order-detail-wrap">
 			<h2 class="page-title">주문상세조회</h2>
 
-			<!-- 주문정보 -->
-			<section class="section-box">
-				<h3 class="section-title">주문정보</h3>
-				<table class="info-table">
-					<tr>
-						<th>주문번호</th>
-						<td>20250717-0000041</td>
-					</tr>
-					<tr>
-						<th>주문일자</th>
-						<td>2025-07-17 09:59:20</td>
-					</tr>
-					<tr>
-						<th>주문자</th>
-						<td>고나영</td>
-					</tr>
-					<tr>
-						<th>주문처리상태</th>
-						<td>구매확정</td>
-					</tr>
-				</table>
-			</section>
+		
+		<!-- 주문정보 -->
+		<section class="section-box">
+		  <h3 class="section-title">주문정보</h3>
+		  <table class="info-table">
+			<tr>
+			  <th>주문번호</th>
+			  <td>${firstOrder.orderDisplayId}</td>
+			</tr>
+			<tr>
+			  <th>주문일자</th>
+			  <td><c:out value="${firstOrder.orderDate}" default="날짜 없음" /></td>
+			</tr>
+			<tr>
+			  <th>주문자</th>
+			  <td>${customerName}</td>
+			</tr>
+			<tr>
+			  <th>주문처리상태</th>
+			  <td>${orders[0].orderStatus}</td>
+			</tr>
+		  </table>
+		</section>
 
 			<!-- 결제정보 -->
-			<section class="section-box">
-				<h3 class="section-title">결제정보</h3>
-				<table class="info-table">
-					<tr>
-						<th>총 주문금액</th>
-						<td>7,800원
-							<button class="btn-detail">내역보기</button>
-						</td>
-					</tr>
-					<tr>
-						<th>총 결제금액</th>
-						<td><strong>7,800원</strong></td>
-					</tr>
-					<tr>
-						<th>결제수단</th>
-						<td>신용카드<br />명세서에 이니시스(으)로 표기됩니다
-						</td>
-					</tr>
-				</table>
-			</section>
+				<section class="section-box">
+				  <h3 class="section-title">결제정보</h3>
+				  <table class="info-table">
+				    <tr>
+				      <th>총 주문금액</th>
+				      <td>
+				        <fmt:formatNumber value="${totalAmount}" pattern="#,###" />원
+				      </td>
+				    </tr>
+				    <tr>
+				      <th>배송비</th>
+				      <td>
+				        <fmt:formatNumber value="${shippingFee}" pattern="#,###" />원
+				      </td>
+				    </tr>
+				    <tr>
+				      <th>총 결제금액</th>
+				      <td>
+				        <strong><fmt:formatNumber value="${totalPrice}" pattern="#,###" />원</strong>
+				      </td>
+				    </tr>
+				    <tr>
+				      <th>결제수단</th>
+				      <td>${firstOrder.paymentMethod}<br />명세서에 이니시스(으)로 표기됩니다</td>
+				    </tr>
+				  </table>
+				</section>
 
-			<!-- 주문 상품 정보 -->
-			<section class="section-box">
-				<h3 class="section-title">
-					주문 상품 정보 <span class="total-item">(총 1개 / 7,800원)</span>
-				</h3>
-				<div class="product-box">
-					<div class="product-img">
-						<img
-							src="${pageContext.request.contextPath}/resources/img/sample/plant.png"
-							alt="식물상품 이미지" />
-					</div>
-					<div class="product-info">
-						<p class="product-name">집에서 스위트바질 식용바질 씨앗 키우기 에코컵</p>
-						<p class="product-price">4,800원 (1개)</p>
-						<p class="product-option">[옵션: 1. 에코_스위트바질]</p>
-						<p class="product-seller">
-							한진택배<br />[454980018942] / 배송: 기본배송
-						</p>
-					</div>
-				</div>
-			</section>
+			<c:forEach var="order" items="${orders}">
+			  <c:if test="${order.orderStatus != '환불완료' 
+			            && order.orderStatus != '환불신청중'
+			            && order.orderStatus != '교환완료' 
+			            && order.orderStatus != '교환신청중'}">
+			
+			    <div class="product-box">
+			      <div class="product-img">
+			        <img src="${pageContext.request.contextPath}/resources/img/sample/plant.png" alt="상품 이미지" />
+			      </div>
+			      <div class="product-info">
+			        <p class="product-name">${order.productName}</p>
+			        <p class="product-price">
+					  <fmt:formatNumber value="${order.productPrice * order.quantity}" pattern="#,###" />원 (${order.quantity}개)
+					</p>
+			        <p class="product-seller">
+			          한진택배<br />[123456789] / 배송: 기본배송
+			        </p>
+			      </div>
+			    </div>
+			
+			  </c:if>
+			</c:forEach>
 
 			<!-- 구매확정 -->
 			<section class="section-box">
-				<div class="confirm-box">
-					<p class="confirm-text">
-						<strong>[기본배송]</strong><br /> 상품구매금액 4,800 + 배송비 3,000 + 지역별배송비 0<br />
-						<strong>합계 : 7,800원</strong>
-					</p>
-					<button class="btn-confirm">구매후기</button>
-				</div>
+			  <div class="confirm-box">
+			    <p class="confirm-text">
+			      <strong>[기본배송]</strong><br />
+			      상품구매금액 <fmt:formatNumber value="${totalAmount}" pattern="#,###" />원 + 
+			      배송비 <fmt:formatNumber value="${shippingFee}" pattern="#,###" />원 <br />
+			      <strong>합계 : 
+			        <fmt:formatNumber value="${totalPrice}" pattern="#,###" />원
+			      </strong>
+			    </p>
+			    <button class="btn-confirm">구매후기</button>
+			  </div>
 			</section>
 
 			<!-- 배송지 정보 -->
 			<section class="section-box">
-				<h3 class="section-title">배송지정보</h3>
-				<table class="info-table">
-					<tr>
-						<th>받으시는분</th>
-						<td>고나영</td>
-					</tr>
-					<tr>
-						<th>우편번호</th>
-						<td>15529</td>
-					</tr>
-					<tr>
-						<th>주소</th>
-						<td>경기 안산시</td>
-					</tr>
-					<tr>
-						<th>휴대전화</th>
-						<td>010</td>
-					</tr>
-					<tr>
-						<th>배송메시지</th>
-						<td></td>
-					</tr>
-				</table>
+			  <h3 class="section-title">배송지정보</h3>
+			  <table class="info-table">
+			    <tr>
+			      <th>받으시는분</th>
+			      <td>${firstOrder.receiver}</td>
+			    </tr>
+			    <tr>
+			      <th>우편번호</th>
+			      <td>${firstOrder.zipcode}</td>
+			    </tr>
+			    <tr>
+			      <th>주소</th>
+			      <td>${firstOrder.address}</td>
+			    </tr>
+			    <tr>
+			      <th>휴대전화</th>
+			      <td>${firstOrder.phoneNumber}</td>
+			    </tr>
+			    <tr>
+			      <th>배송메시지</th>
+			      <td>${firstOrder.deliveryMsg}</td>
+			    </tr>
+			  </table>
 			</section>
 
 			<!-- 하단 버튼 -->
