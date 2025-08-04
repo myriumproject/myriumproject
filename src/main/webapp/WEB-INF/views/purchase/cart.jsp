@@ -70,7 +70,7 @@
 
 					<div class="cartCount">
 						<button type="button" class="buttonMinus" onclick="changeQuantity('decrease', this)" data-product-id="${item.product.id}">-</button>
-						<input type="number" class="productQty" name="quantity" id="quantity" value="${item.inCart.quantity}" min="1" readonly />
+						<input type="number"  class="productQty" name="quantity" id="quantity" value="${item.inCart.quantity}" min="1" readonly />
 						<button type="button" class="buttonPlus" onclick="changeQuantity('increase', this)" data-product-id="${item.product.id}">+</button>
 					</div>
 
@@ -101,7 +101,6 @@
 	<%@ include file="/WEB-INF/views/main/footer.jsp"%>
 </body>
 <script src="${pageContext.request.contextPath}/resources/js/deleteProduct.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/updateTotalPrice.js"></script>
 <script>
   // 수량 변경 함수
   function changeQuantity(action, button) {
@@ -150,7 +149,37 @@
     });
   }
   
-  
+  function updateTotalPrice(){
+	  const productContainers = document.querySelectorAll('.cartContentsWrap');
+	  let total = 0;
+	  
+	  productContainers.forEach(container => {
+		  const priceE1 = container.querySelector('.productPrice');
+		  const qtyE1 = container.querySelector('.productQty');
+		  if (priceE1 && qtyE1) {
+			  const price = parseInt(priceE1.getAttribute('data-price')) || 0;
+			  const qty = parseInt(qtyE1.value) || 1;
+			  
+			  total += price * qty;
+
+			  console.log(total);
+		  }
+
+	  });
+	  if (total == 0){
+		  total = 0;
+	  } else if (total < 49900){
+		total += 3000;
+	  }
+	  
+	  const formattedTotal = total.toLocaleString(); // 3자리 단위 콤마
+	  document.querySelector('.cartTotal').innerHTML = `
+		<span style="font-weight: 400; float:right; font-size:13px;">배송비 3,000원(49,900원 이상 구매 시 무료)</span><br>
+	    <span style="font-size: 14px; margin-right: 30px;">결제예정금액</span>
+	    $${'{formattedTotal}'}원
+	  `;
+
+  }
   document.addEventListener("DOMContentLoaded", updateTotalPrice);
 </script>
 

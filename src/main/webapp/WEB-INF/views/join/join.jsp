@@ -96,8 +96,6 @@
 	    <input type="text" id="detailAddress" name="addr2" placeholder="나머지 주소" />
 	</div>
 
-
-
 	<div class="form_section phone">
 	  <label>휴대전화 <span class="required">*</span></label>
 	  <div class="phone_group">

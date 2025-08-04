@@ -143,7 +143,6 @@ public class ProductServiceImpl implements ProductService {
 			productDTOs.add(dto);
 		}
 
-		log.info(productDTOs);
 
 		return productDTOs;
 	}
