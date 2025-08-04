@@ -94,11 +94,7 @@ public class PurchaseController {
 		orders.setCustomerId(customerName);
 		orders.setZipcode(zipcode);
 		orders.setAddress(addr);
-<<<<<<< HEAD
-		orders.setMessage(messageSelect);
-=======
 		orders.setDeliveryMsg(messageSelect);
->>>>>>> main
 		orders.setPhoneNumber(phone);
 		orders.setPayment(payment);
 		
