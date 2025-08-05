@@ -16,7 +16,8 @@ SELECT
   TO_CHAR(o.order_date, 'YYYY-MM-DD') AS orderDate,
   p.product_name       AS productName,
   p.product_price      AS productPrice,
-  op.quantity          AS quantity
+  op.quantity          AS quantity,
+  o.orders_id AS ordersIdfull
 FROM
   orders_product op
 JOIN orders o ON op.orders_id = o.id
@@ -24,6 +25,7 @@ JOIN product p ON op.product_id = p.id
 JOIN member m ON op.user_id = m.id
 WHERE (op.is_deleted IS NULL OR op.is_deleted = 0)
   AND m.customer_id = #{customerId}
+  AND op.order_status NOT IN (4, 5, 6, 7)
 ORDER BY o.order_date DESC, o.orders_id
 </select>
 
@@ -53,7 +55,7 @@ ORDER BY o.order_date DESC, o.orders_id
 ) VALUES (
     #{id},
     #{userId},
-    '20250804-0000001',
+    #{ordersId},
     SYSDATE,
     #{customerId},
     0,
@@ -100,7 +102,8 @@ ORDER BY o.order_date DESC, o.orders_id
       p.product_name       AS productName,
       p.product_price      AS productPrice,
       op.quantity          AS quantity,
-      op.order_status       AS orderStatus
+      op.order_status       AS orderStatus,
+      o.orders_id AS ordersIdfull
     FROM
       orders_product op
     JOIN orders o ON op.orders_id = o.id
@@ -108,6 +111,7 @@ ORDER BY o.order_date DESC, o.orders_id
     JOIN member m ON op.user_id = m.id
     WHERE (op.is_deleted IS NULL OR op.is_deleted = 0)
       AND m.customer_id = #{customerId}
+     	AND op.order_status IN (4, 5, 6, 7)
     ORDER BY o.order_date DESC, o.orders_id
   </select>
 
@@ -123,6 +127,7 @@ ORDER BY o.order_date DESC, o.orders_id
   JOIN member m ON o.user_id = m.id
   WHERE (op.is_deleted IS NULL OR op.is_deleted = 0)
     AND m.customer_id = #{customerId}
+    AND TRIM(op.order_status) IN (0, 1, 2, 3)
     AND o.order_date >= ADD_MONTHS(SYSDATE, -3)
   GROUP BY TRIM(op.order_status)
 </select>
@@ -140,6 +145,7 @@ ORDER BY o.order_date DESC, o.orders_id
   LEFT JOIN product p ON op.product_id = p.id
   WHERE (op.is_deleted IS NULL OR op.is_deleted = 0)
     AND m.customer_id = #{customerId}
+    AND op.order_status IN (0, 1, 2, 3)
     AND o.order_date >= ADD_MONTHS(SYSDATE, -3)
 </select>
 
@@ -161,7 +167,8 @@ ORDER BY o.order_date DESC, o.orders_id
     o.phone_number AS phoneNumber,
     o.zipcode AS zipcode,
     o.address AS address,
-    o.delivery_msg AS deliveryMsg
+    o.delivery_msg AS deliveryMsg,
+     o.orders_id AS ordersIdfull
 
   FROM
     orders o
@@ -180,6 +187,13 @@ ORDER BY o.order_date DESC, o.orders_id
     orders_product op
   JOIN product p ON op.product_id = p.id
   WHERE op.orders_id = #{orderId}
+    AND op.order_status NOT IN (4, 5, 6, 7)
     AND op.is_deleted = 0
+</select>
+
+<select id="countOrdersToday" resultType="int">
+  SELECT COUNT(*) 
+  FROM orders 
+  WHERE SUBSTR(orders_id, 1, 8) = #{today}
 </select>
 </mapper>
