@@ -30,4 +30,8 @@ public interface OrderMapper {
 
 	int countOrdersToday(String today);
 
+	List<OrderDTO> productList(Long orderId);
+
+	void decreaseStock(int productid, int quantity);
+
 }

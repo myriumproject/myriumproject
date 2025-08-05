@@ -60,7 +60,7 @@ public class PurchaseController {
 	}
 
 	@PostMapping("/purchasecomplete")
-	public String purchaseComplete(HttpServletRequest request) {
+	public String purchaseComplete(HttpServletRequest request, Model model) {
 		
 		// 로그인한 사용자 id 가져오기
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -117,7 +117,6 @@ public class PurchaseController {
 		// 상품 ID 여러 개 받기
 		String[] productIdArray = request.getParameterValues("productId");
 		String[] quantityArray = request.getParameterValues("quantity");
-		
 
 		
 		if (productIdArray != null && quantityArray != null) {
@@ -135,7 +134,21 @@ public class PurchaseController {
 			log.warn("상품 없음");
 		}
 		
+		// hidden으로부터 가격을 받아와 저장
+		String totalPrice = request.getParameter("totalprice");
+		String formattedTotal = request.getParameter("formattedTotal");
+
+		// 프론트로 정보 보내주기
+		model.addAttribute("orders", orders);
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("formattedTotal", formattedTotal);
+		
+		List<OrderDTO> productList = orderservice.productList(OrderId);
+		log.info("낑낑이" + productList);
+		
+		model.addAttribute("productList", productList);
+		
 		return "purchase/purchaseComplete";
 	}
-
+	
 }

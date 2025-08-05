@@ -196,4 +196,15 @@ ORDER BY o.order_date DESC, o.orders_id
   FROM orders 
   WHERE SUBSTR(orders_id, 1, 8) = #{today}
 </select>
+
+<select id="productList" resultType="com.myrium.domain.OrderDTO">
+SELECT p.*, op.quantity
+FROM product p
+JOIN orders_product op ON p.id = op.product_id
+WHERE op.orders_id = #{orderId}
+</select>
+
+<update id="decreaseQuantity">
+
+</update>
 </mapper>

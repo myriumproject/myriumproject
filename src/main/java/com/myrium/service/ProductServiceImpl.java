@@ -10,6 +10,7 @@ import com.myrium.domain.CartVO;
 import com.myrium.domain.CategoryVO;
 import com.myrium.domain.Criteria;
 import com.myrium.domain.ImgpathVO;
+import com.myrium.domain.OrderDTO;
 import com.myrium.domain.ProductDTO;
 import com.myrium.domain.ProductVO;
 import com.myrium.mapper.ProductMapper;
@@ -158,5 +159,6 @@ public class ProductServiceImpl implements ProductService {
 	public void deleteCart(Long productId, Long userId) {
 		int deleted = productmapper.deleteCart(productId, userId);
 	}
-	
+
+
 }

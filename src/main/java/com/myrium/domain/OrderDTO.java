@@ -2,6 +2,7 @@ package com.myrium.domain;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -28,6 +29,10 @@ public class OrderDTO {
 	    private int productId;
 	    private String orderDisplayId;
 	    private String ordersIdfull;
+	    private String product_name;
+		private int discount_price;
+		private int product_price;
+		private String product_content;
 
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
