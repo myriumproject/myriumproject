@@ -135,5 +135,9 @@
 		resultType="com.myrium.domain.ProductVO">
 		SELECT * FROM product
 		WHERE LOWER(product_name) LIKE '%' || #{searchKeyword} || '%'
+	
+	<!-- 상품리뷰 -->
+	<select id="findById" parameterType="long" resultType="com.myrium.domain.ProductDTO">
+  	SELECT * FROM product WHERE id = #{id}
 	</select>
 </mapper>
