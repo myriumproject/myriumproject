@@ -159,22 +159,22 @@
 						<p>결제수단 선택</p>
 						<div class="methodSelect">
 							<label>
-								<input type="radio" name="payment" value="무통장입금" checked>
+								<input type="radio" name="payment" value="0" checked>
 								<span>무통장입금</span>
 							</label>
 
 							<label>
-								<input type="radio" name="payment" value="신용카드">
+								<input type="radio" name="payment" value="1">
 								<span>신용카드</span>
 							</label>
 
 							<label>
-								<input type="radio" name="payment" value="가상계좌">
+								<input type="radio" name="payment" value="2">
 								<span>가상계좌</span>
 							</label>
 
 							<label>
-								<input type="radio" name="payment" value="실시간 계좌이체">
+								<input type="radio" name="payment" value="3">
 								<span>실시간 계좌이체</span>
 							</label>
 						</div>

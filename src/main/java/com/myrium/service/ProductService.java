@@ -33,4 +33,8 @@ public interface ProductService {
 
 	void deleteCart(Long productId, Long userId);
 
+	public int getStock(int productid);
+
+	public void decreaseStock(int decreaseStock, int productid);
+
 }

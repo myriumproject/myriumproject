@@ -86,7 +86,7 @@
 								<td>
 									<p style="margin-bottom: 10px;">${item.product_name}</p>
 									<p style="color: #888">${item.product_content }</p>
-									<p style="color: #888; margin-bottom: 10px;">수량 : ${item.quantity} 마리</p> 
+									<p style="color: #888; margin-bottom: 10px;">수량 : ${item.quantity}개</p> 
 									<c:if test="${item.discount_price != 0}">
 										<p style="margin-bottom: 10px;">
 											<fmt:formatNumber value="${item.discount_price * item.quantity}" type="number" groupingUsed="true" />원
@@ -152,6 +152,5 @@
 			  `;
 		}
 	}
-
 </script>
 </html>

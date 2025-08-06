@@ -160,5 +160,16 @@ public class ProductServiceImpl implements ProductService {
 		int deleted = productmapper.deleteCart(productId, userId);
 	}
 
+	@Override
+	public int getStock(int productid) {
+		
+		return productmapper.getStock(productid);
+	}
+
+	@Override
+	public void decreaseStock(int decreaseStock, int productid) {
+		productmapper.decreaseStock(decreaseStock, productid);
+	}
+
 
 }

@@ -191,6 +191,9 @@ public class MypageController {
         model.addAttribute("cancelGroupedOrders", cancelGroupedOrders);
         model.addAttribute("cancelCount", cancelList.size());
 
+        log.info(cancelGroupedOrders);
+        log.info(groupedOrders);
+        
         return "mypage/order_history";
     }
 

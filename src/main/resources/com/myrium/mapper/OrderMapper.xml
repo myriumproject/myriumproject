@@ -204,7 +204,4 @@ JOIN orders_product op ON p.id = op.product_id
 WHERE op.orders_id = #{orderId}
 </select>
 
-<update id="decreaseQuantity">
-
-</update>
 </mapper>
