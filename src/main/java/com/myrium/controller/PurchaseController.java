@@ -117,7 +117,7 @@ public class PurchaseController {
 		// 상품 ID 여러 개 받기
 		String[] productIdArray = request.getParameterValues("productId");
 		String[] quantityArray = request.getParameterValues("quantity");
-
+    
 		// 상품 리스트를 받은 후 상품들 업데이트
 		if (productIdArray != null && quantityArray != null) {
 			for (int i = 0; i < productIdArray.length; i++) {
