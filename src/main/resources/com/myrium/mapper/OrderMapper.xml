@@ -84,7 +84,7 @@ ORDER BY o.order_date DESC, o.orders_id
     ORDERS_PRODUCT_SEQ.NEXTVAL, #{productId} ,#{orderId}, #{userId},
     #{customerName}, SYSDATE,
     NULL, NULL,
-    0, #{quantity}, 0
+    0, #{quantity}, 1
 )
 </insert>
 
@@ -260,6 +260,45 @@ SELECT p.*, op.quantity
 FROM product p
 JOIN orders_product op ON p.id = op.product_id
 WHERE op.orders_id = #{orderId}
+</select>
+
+<!-- 상품리뷰 -->
+<select id="findProductInOrder" resultType="com.myrium.domain.OrderDTO">
+  SELECT
+    o.id AS id,
+    TO_CHAR(o.order_date, 'yyyy-MM-dd') AS orderDate,
+    op.orders_id AS ordersId,
+    op.quantity,
+    op.order_status AS orderStatus,
+    p.product_name AS productName,
+    p.product_price AS productPrice,
+    p.id AS productId,
+    o.payment_method AS paymentMethod,
+    o.customer_name AS receiver,
+    o.phone_number AS phoneNumber,
+    o.zipcode AS zipcode,
+    o.address AS address,
+    o.orders_id AS ordersIdfull,
+    o.delivery_msg AS deliveryMsg
+  FROM
+    orders o
+  JOIN orders_product op ON o.id = op.orders_id
+  LEFT JOIN product p ON op.product_id = p.id
+  WHERE o.id = #{orderId}
+    AND p.id = #{productId}
+</select>
+
+<!-- 주문상태변경 -->
+<select id="findOrdersForStatusUpdate" resultType="com.myrium.domain.OrderDTO">
+  SELECT 
+    o.id AS id,
+    op.product_id AS productId,
+    op.order_status AS orderStatus,
+    TO_CHAR(o.order_date, 'YYYY-MM-DD HH24:MI:SS') AS orderDate,
+    op.orders_id AS ordersId
+  FROM orders o
+  JOIN orders_product op ON o.id = op.orders_id
+  WHERE op.order_status IN (1, 2)
 </select>
 
 

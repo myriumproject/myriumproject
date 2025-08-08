@@ -33,5 +33,12 @@ public interface OrderService {
 	int countOrdersToday(String today);
 
 	List<OrderDTO> productList(Long orderId);
+	
+	//상품리뷰
+	OrderDTO getOrderProduct(Long orderId, int productId);
+	
+	//주문상태변경
+	List<OrderDTO> getOrdersToAutoUpdate();
+	
 
 }

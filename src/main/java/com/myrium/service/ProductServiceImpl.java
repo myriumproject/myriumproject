@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.myrium.domain.CartVO;
-import com.myrium.domain.CategoryVO;
-import com.myrium.domain.Criteria;
 import com.myrium.domain.ImgpathVO;
-import com.myrium.domain.OrderDTO;
 import com.myrium.domain.ProductDTO;
 import com.myrium.domain.ProductVO;
+import com.myrium.domain.SearchCriteria;
 import com.myrium.mapper.ProductMapper;
 
 import lombok.AllArgsConstructor;
@@ -25,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductMapper productmapper;
+	
 
 	// controller에서 지정한 카테고리에 해당하는 목록 불러오기
 	@Override
@@ -180,6 +179,31 @@ public class ProductServiceImpl implements ProductService {
 	public void increaseSalesCount(int increaseSalesCount, int productid) {
 		productmapper.increaseSalesCount(increaseSalesCount, productid);
 	}
+
+	@Override
+	public List<ProductDTO> getSearchProductList(String searchKeyword, SearchCriteria searchcri) {
+		List<ProductVO> products = productmapper.getSearchProductList(searchKeyword, searchcri);
+		List<ProductDTO> productDTOs = new ArrayList<>();
+
+		for (ProductVO product : products) {
+			ImgpathVO thumbnail = productmapper.getThumbnail(product.getId());
+			ProductDTO dto = new ProductDTO();
+			dto.setProduct(product);
+			dto.setThumbnail(thumbnail);
+			productDTOs.add(dto);
+		}
+		return productDTOs;
+	}
 	
+	//상품리뷰
+	@Override
+	public ProductDTO getProductById(Long id) {
+		return productmapper.findById(id); 
+	}
+
+	@Override
+	public int searchResultCount(String searchKeyword) {
+		return productmapper.searchResultCount(searchKeyword);
+	}
 
 }

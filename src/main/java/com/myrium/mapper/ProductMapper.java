@@ -6,9 +6,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.myrium.domain.CartVO;
-import com.myrium.domain.CategoryVO;
 import com.myrium.domain.ImgpathVO;
+import com.myrium.domain.ProductDTO;
 import com.myrium.domain.ProductVO;
+import com.myrium.domain.SearchCriteria;
 
 // 작성자 : 노기원
 // 작성일 : 2025.07.23 14:44
@@ -72,4 +73,13 @@ public interface ProductMapper {
 	public void increaseSalesCount(@Param("increaseSalesCount") int increaseSalesCount,
 			@Param("productid") int productid);
 
+	public List<ProductVO> getSearchProductList(@Param("searchKeyword") String searchKeyword, @Param("searchcri") SearchCriteria searchcri);
+
+	//상품리뷰
+	public ProductDTO findById(Long id);
+	
+	// 검색결과 카운트
+	public int searchResultCount(String searchKeyword);
+	
+	
 }

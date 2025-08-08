@@ -96,10 +96,13 @@
 
 	<update id="updateQuantity"
 		parameterType="com.myrium.domain.OrderDTO">
-		UPDATE cart SET quantity = #{newQuantity, jdbcType=INTEGER}, updated_at =
+		UPDATE cart SET quantity = #{newQuantity,
+		jdbcType=INTEGER}, updated_at =
 		sysdate
-		WHERE product_id = #{productId, javaType=java.lang.Long, jdbcType=BIGINT}
-		AND user_id = #{userId, javaType=java.lang.Long, jdbcType=BIGINT}
+		WHERE product_id = #{productId,
+		javaType=java.lang.Long, jdbcType=BIGINT}
+		AND user_id = #{userId,
+		javaType=java.lang.Long, jdbcType=BIGINT}
 		AND is_deleted = 0
 	</update>
 
@@ -107,20 +110,50 @@
 		UPDATE cart SET is_deleted = 1, quantity = 0 WHERE
 		product_id = #{productId} AND user_id = #{userId}
 	</update>
-	
+
 	<select id="getStock" resultType="int">
-		SELECT product_stock FROM product WHERE id = #{productid}
+		SELECT product_stock FROM
+		product WHERE id = #{productid}
 	</select>
-	
+
 	<update id="decreaseStock">
-		UPDATE product SET product_stock = #{decreaseStock} where id = #{productid}
+		UPDATE product SET product_stock = #{decreaseStock}
+		where id = #{productid}
 	</update>
-	
+
 	<select id="getSalesCount">
-		SELECT sales_count from product where id = #{productid}
+		SELECT sales_count from product where id =
+		#{productid}
 	</select>
-	
+
 	<update id="increaseSalesCount">
-		UPDATE product SET sales_count = #{increaseSalesCount} where id = #{productid}
+		UPDATE product SET sales_count =
+		#{increaseSalesCount} where id = #{productid}
 	</update>
+
+	<select id="getSearchProductList" resultType="com.myrium.domain.ProductVO">
+ <![CDATA[ 
+	SELECT id,product_name,product_content, product_stock, product_price,
+	is_deleted, created_at, created_by, updated_at, updated_by,
+	is_timesales, is_mainone, is_maintwo, is_discount, discount_rate,
+	timesalediscount_rate, total_discountrate, discount_price, sales_count
+	FROM (
+	SELECT /*+INDEX_DESC(product pk_product)*/ rownum rn, id,product_name,product_content, product_stock, product_price,
+	is_deleted, created_at, created_by, updated_at, updated_by,
+	is_timesales, is_mainone, is_maintwo, is_discount, discount_rate,
+	timesalediscount_rate, total_discountrate, discount_price, sales_count
+	FROM product WHERE LOWER(product_name) LIKE '%' || #{searchKeyword} ||
+	'%' AND rownum <= #{searchcri.pageNum}*#{searchcri.amount}) where rn > (#{searchcri.pageNum} -1) * #{searchcri.amount}
+   ]]> 
+	</select>
+
+	<!-- 상품리뷰 -->
+	<select id="findById" parameterType="long"
+		resultType="com.myrium.domain.ProductDTO">
+		SELECT * FROM product WHERE id = #{id}
+	</select>
+	<!-- 검색결과 카운트 -->
+	<select id="searchResultCount" resultType="int">
+		select count(*) from product where LOWER(product_name) LIKE '%' || #{searchKeyword} || '%'
+	</select>
 </mapper>
