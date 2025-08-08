@@ -45,6 +45,7 @@ public interface ProductService {
 
 	public List<ProductDTO> getSearchProductList(String searchKeyword, SearchCriteria searchcri, String sort);
 
+
 	public int searchResultCount(String searchKeyword);
 
 }

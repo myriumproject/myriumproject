@@ -93,7 +93,6 @@
 			</c:if>
 
 			<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-
 				<c:choose>
 					<c:when test="${i == pageMaker.cri.pageNum}">
 						<ul class="active">
@@ -106,6 +105,7 @@
 						</ul>
 					</c:otherwise>
 				</c:choose>
+
 			</c:forEach>
 
 			<c:if test="${pageMaker.endPage != pageMaker.endPage}">
@@ -123,6 +123,7 @@
 		<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 		<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 		<input type='hidden' name='sort' value='${sort}'>
+
 	</form>
 	<%@ include file="/WEB-INF/views/main/footer.jsp"%>
 </body>

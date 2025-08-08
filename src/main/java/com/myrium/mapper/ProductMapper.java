@@ -75,6 +75,7 @@ public interface ProductMapper {
 
 	public List<ProductVO> getSearchProductList(@Param("searchKeyword") String searchKeyword, @Param("searchcri") SearchCriteria searchcri,@Param("sort") String sort);
 
+
 	//상품리뷰
 	public ProductDTO findById(Long id);
 	
