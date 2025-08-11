@@ -98,8 +98,7 @@
 		,#{orderId}, #{userId},
 		#{customerName}, SYSDATE,
 		NULL, NULL,
-		0,
-		#{quantity},
+		0, #{quantity},
 		<choose>
 			<when test="payment == 0">
 				0
@@ -107,6 +106,7 @@
 			<when test="payment == 2">
 				0
 			</when>
+
 			<otherwise>
 				1
 			</otherwise>
