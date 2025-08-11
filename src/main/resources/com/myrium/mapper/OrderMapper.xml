@@ -269,12 +269,6 @@
 		AND product_id =
 		#{productId}
 	</update>
-	<update id="updateOrdersStatus">
-		UPDATE orders
-		SET order_status = #{orderStatus}
-		WHERE
-		id = #{orderId}
-	</update>
 
 	<!-- 환불 신청 여부 1로 업데이트 -->
 	<update id="updateRefundFlag">
