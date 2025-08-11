@@ -316,5 +316,4 @@ WHERE rn > (#{searchcri.pageNum} - 1) * #{searchcri.amount}
 			</otherwise>
 		</choose>
 	</select>
-
 </mapper>
