@@ -3,14 +3,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<%@include file="../main/header.jsp"%>
 <%@include file="../includes_admin/header.jsp"%>
 
 <body>
+<%@include file="../main/header.jsp"%>
 	<div class="row">
 		<div class="col-lg-12">
 			<sec:authorize access="hasAuthority('ADMIN')">
-				<h1 class="page-header">문의하기(관리자)</h1>
+				<h1 class="page-header">문의하기<span class="badge">관리자</span></h1>
 			</sec:authorize>
 			<sec:authorize access="!hasAuthority('ADMIN')">
 				<h1 class="page-header">문의하기</h1>

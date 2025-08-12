@@ -4,7 +4,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <jsp:useBean id="now" class="java.util.Date" />
 
-<%@include file="../main/header.jsp"%>
 <%@include file="../includes_admin/header.jsp"%>
 
 <!-- 뒤로가기 시 조회수 증가를 위해 새로고침 -->
@@ -18,10 +17,11 @@
 </script>
 
 <body>
+<%@include file="../main/header.jsp"%>
 	<div class="row">
 		<div class="col-lg-12">
 			<sec:authorize access="hasAuthority('ADMIN')">
-				<h1 class="page-header">공지사항(관리자)</h1>
+				<h1 class="page-header">공지사항<span class="badge">관리자</span></h1>
 			</sec:authorize>
 			<sec:authorize access="!hasAuthority('ADMIN')">
 				<h1 class="page-header">공지사항</h1>
