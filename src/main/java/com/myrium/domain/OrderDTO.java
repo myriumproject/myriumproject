@@ -48,6 +48,7 @@ public class OrderDTO {
 		private int total_price;
 		private int is_thumbnail_main;
 
+
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
         setOrderDisplayId(); // orderDate가 바뀌면 다시 계산
