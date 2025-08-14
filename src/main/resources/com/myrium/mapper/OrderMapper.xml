@@ -356,4 +356,8 @@
 	     AND updated_at <= SYSDATE - 1
 	  ]]>
 	</update>
+	
+	<update id="updateChecked">
+	UPDATE cart SET IS_SELECTED = #{checked} WHERE product_id = #{productId}
+	</update>
 </mapper>

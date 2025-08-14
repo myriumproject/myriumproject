@@ -56,5 +56,7 @@ public interface OrderMapper {
 	//주문상태변경
 	List<OrderDTO> findOrdersForStatusUpdate();
 	
-	 int autoConfirmAfter1Day();  
+	 int autoConfirmAfter1Day();
+
+	void updateChecked(@Param("productId") Long productId,@Param("checked") int checked);  
 }
