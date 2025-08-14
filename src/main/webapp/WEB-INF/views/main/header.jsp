@@ -165,11 +165,6 @@
 		}
 
 	});
-	
-	document.querySelectorAll('form').forEach(function(form){
-	    if(form.id === 'joinForm') return; // 회원가입 폼 제외
-	    // 검색창 등 다른 form 이벤트 처리
-	});
 
 
 </script>
