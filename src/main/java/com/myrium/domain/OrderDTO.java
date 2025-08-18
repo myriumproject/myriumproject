@@ -2,10 +2,8 @@ package com.myrium.domain;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class OrderDTO {
@@ -30,6 +28,7 @@ public class OrderDTO {
 	    private int productId;
 	    private String orderDisplayId;
 	    private String ordersIdfull;
+	    private int totalPrice;
 	    
 	    private int isApprefund;   //환불신청여부
 	    private int isAppexchanged;  //교환신청여부
@@ -37,14 +36,16 @@ public class OrderDTO {
 	    private int isRefundable; //환불완료
 	    private int isExchanged;	//교환완료
 
-	  private String product_name;
+	    private String product_name;
 		private int discount_price;
 		private int product_price;
 		private String product_content;
 		private int orders_product_id;
-		private int order_status_product;
+		private int order_status_product;	
 		
 		private String img_path;
+		private int total_price;
+		private int is_thumbnail_main;
 
 
     public void setOrderDate(String orderDate) {
@@ -110,6 +111,7 @@ public class OrderDTO {
             case 16: return "취소승인";
             case 17: return "취소거절";
             case 18: return "구매확정";
+            case 99: return "부분 취소/교환/반품";
             default: return "알 수 없음";
         }
     }
