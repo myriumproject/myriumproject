@@ -197,11 +197,11 @@ emailInput.addEventListener('input', () => {
 	  .then(response => response.text())
 	  .then(text => {
 	    if (text === "unavailable") {
-	      emailErrorEl.textContent = '이미 사용 중인 아이디입니다.';
+	      emailErrorEl.textContent = '이미 사용 중인 이메일입니다.';
 	      emailErrorEl.className = 'error_msg';
 	      isIdAvailable = false;
 	    } else {
-	      emailErrorEl.textContent = '사용 가능한 아이디입니다.';
+	      emailErrorEl.textContent = '사용 가능한 이메일입니다.';
 	      emailErrorEl.className = 'success_msg';
 	      isIdAvailable = true;
 	    }

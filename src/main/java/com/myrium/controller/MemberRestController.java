@@ -28,7 +28,7 @@ public class MemberRestController {
 	    
 	    @GetMapping("/check-email")
 	    public ResponseEntity<String> checkEmail(@RequestParam String email) {
-	        boolean isDuplicate = memberService.isCustomerIdDuplicate(email);
+	        boolean isDuplicate = memberService.isCustomerEmailDuplicate(email);
 	        String result = isDuplicate ? "unavailable" : "available";
 	        return ResponseEntity.ok(result);
 	    }

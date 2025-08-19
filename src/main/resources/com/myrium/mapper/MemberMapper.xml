@@ -135,7 +135,7 @@
 	  WHERE customer_id = #{customerId}
 	</select>
 	
-		<select id="selectByCustomerId" resultType="com.myrium.domain.MemberVO">
+		<select id="selectByEmail" resultType="com.myrium.domain.MemberVO">
 	  SELECT *
 	  FROM member
 	  WHERE email = #{email}
