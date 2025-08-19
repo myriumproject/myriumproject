@@ -10,7 +10,17 @@
   .category-label {
     display: inline-block;
     margin: 1px;
+  }  
+  
+  table.table td, table.table th {
+      vertical-align: middle !important;
+      text-align: center;
   }
+  
+    table.table {
+      font-size: 13px;
+  }
+  
 </style>
 
 <!-- 뒤로가기 시 조회수 증가를 위해 새로고침 -->
@@ -89,7 +99,7 @@
 				    </form>
 				
 				    <!-- 상품 테이블 -->
-				    <table class="table table-bordered table-hover">
+				    <table style="width:100%;" class="table table-striped table-bordered table-hover" id="dataTables-example">
 				        <thead>
 				            <tr>
 				                <th class="text-center">상품번호</th>
@@ -132,11 +142,11 @@
 				                    <td class="text-right">${product.product.product_stock}</td>
 				                    <td class="text-right"><fmt:formatNumber value="${product.product.product_price}" pattern="#.##"/></td>
 				                    <td class="text-right"><fmt:formatNumber value="${product.product.discount_price}" pattern="#.##"/></td>
-				                    <td class="text-center">${product.product.is_discount ==1 ? '<span class="label label-success ml-1">할인중</span>' : '없음'}</td>
+				                    <td class="text-center">${product.product.is_discount ==1 ? '<span class="label label-success ml-1">할인중</span>' : '<span class="label label-default">없음</span>'}</td>
 				                    <td class="text-right">${product.product.discount_rate}%</td>
-				                    <td class="text-center">${product.product.is_timesales == 1 ? '<span class="label label-success ml-1">할인중</span>' : '없음'}</td>
+				                    <td class="text-center">${product.product.is_timesales == 1 ? '<span class="label label-success ml-1">할인중</span>' : '<span class="label label-default">없음</span>'}</td>
 				                    <td class="text-right">${product.product.timesalediscount_rate}%</td>
-				                    <td class="text-center">${product.product.is_deleted == 0 ? '<span class="label label-success ml-1">전시중</span>' : '비노출'}</td>
+				                    <td class="text-center">${product.product.is_deleted == 0 ? '<span class="label label-success ml-1">전시중</span>' : '<span class="label label-default">비노출</span>'}</td>
 				                    <td>
 				                        <button class="btn btn-sm btn-primary" onclick="location.href='/adminproduct/modify?id=${product.product.id}'">수정</button>
 				                        <c:choose>
@@ -158,11 +168,11 @@
 					<!-- 검색조건 -->
 					<div class='row'>
 						<div class="col-lg-12">
-							<form id='searchForm' action="/adminproduct/list" method='get'>
-								<!-- <select name='type' >
+							<form id='searchFormProduct' action="/adminproduct/list" method='get'>
+								<select name='type' >
+									<option value="" <c:out value="${pageMaker.cri.type == null ? 'selected' : ''}" /> >선택하세요</option>
 									<option value="T" <c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>상품명</option>
-								</select> --> 
-								<input type='hidden' name='type' value="T" />
+								</select> 
 								<input type='text' name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
 								<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
 								<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
@@ -279,26 +289,26 @@ $(document).ready(function(){
 		actionForm.find("input[name='id']").remove(); //뒤로가기 후 기존 파라미터 누적문제 해결
 		
 		actionForm.append("<input type='hidden' name='id' value='" + $(this).attr("href") + "'>");
-		actionForm.attr("action","/adminproduct/modify");
+		actionForm.attr("action","/sub");
 		actionForm.submit();
 	});
 	
-	var searchForm = $("#searchForm");
+	var searchFormProduct = $("#searchFormProduct");
 
-	$("#searchForm button").on("click", function(e){
-		//if(!searchForm.find("option:selected").val()){
-		//	alert("검색종류를 선택하세요");
-		//	return false;
-		//}
+	$("#searchFormProduct button").on("click", function(e){
+		if(!searchFormOrder.find("option:selected").val()){
+			alert("검색종류를 선택하세요");
+			return false;
+		}
 
-		//if(!searchForm.find("input[name='keyword']").val()){
-		//	alert("키워드를 입력하세요");
-		//	return false;
-		//}
-		searchForm.find("input[name='pageNum']").val("1");
+		if(!searchFormOrder.find("input[name='keyword']").val()){
+			alert("키워드를 입력하세요");
+			return false;
+		}
+		searchFormProduct.find("input[name='pageNum']").val("1");
 		e.preventDefault();
 		
-		searchForm.submit();
+		searchFormProduct.submit();
 		
 	});
     
@@ -336,7 +346,7 @@ $(document).ready(function(){
 	                location.reload();
 	            },
 	            error: function () {
-	                alert("글내림 실패");
+	                alert("상품 비노출 실패");
 	            }
 	        });
 	    }

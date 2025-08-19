@@ -100,12 +100,12 @@
 					</div>
 				</div>
 
-				<div class="form_row">
+				<!-- <div class="form_row">
 					<label for="password">비밀번호 <span class="required">*</span></label>
 					<div class="form_input">
 						<input type="password" id="password" name="password" class="half_input" />
 						<p class="desc">(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자)</p>
-						<p class="error_msg" id="pwError"></p> <!-- 메시지 영역 추가 -->
+						<p class="error_msg" id="pwError"></p>
 					</div>
 				</div>
 
@@ -113,9 +113,9 @@
 					<label for="passwordConfirm">비밀번호 확인 <span class="required">*</span></label>
 					<div class="form_input">
 						<input type="password" id="passwordConfirm" name="passwordConfirm" class="half_input" />
-						<p class="error_msg" id="pwMatchError"></p> <!-- 확인 메시지 영역 추가 -->
+						<p class="error_msg" id="pwMatchError"></p>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="form_row">
 					<label for="name">이름 <span class="required">*</span></label>
@@ -247,21 +247,23 @@
 				
 				<div class="form_row">
                     <label>생성일(생성자)</label>
-                    <label><fmt:formatDate value="${member.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /> (${member.createdBy})</label>
+                    <label><fmt:formatDate value="${member.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                    	<c:if test="${member.createdBy != null}">(${member.createdBy})</c:if>
+                    </label>
                 </div>
                 <div class="form_row">    
                     <label>최종 수정일(수정자)</label>
-                    <label><fmt:formatDate value="${member.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss" /> (${member.updatedBy})</label>
+                    <label><fmt:formatDate value="${member.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                    	<c:if test="${member.updatedBy != null}">(${member.updatedBy})</c:if>
+                    </label>
 				</div>
 
 				<div class="form_buttons">
 					<!-- <button type="button" class="btn_delete_account">회원삭제</button> -->
 
 					<div class="btn_right_group">
-						<button type="button" class="btn_cancel"
-  onclick="location.href='${pageContext.request.contextPath}/adminmember/list'">취소</button>
-						<button type="button" class="btn_submit"
-							onclick="checkBeforeSubmit()">회원정보수정</button>
+						<button type="button" class="btn_cancel" onclick="location.href='${pageContext.request.contextPath}/adminmember/list'">취소</button>
+						<button type="button" class="btn_submit" onclick="checkBeforeSubmit()">회원정보수정</button>
 					</div>
 				</div>
 			</form>		
@@ -358,23 +360,24 @@ document.addEventListener("DOMContentLoaded", function () {
 	
 <script>
 function checkBeforeSubmit() {
-  const pw = document.getElementById("password").value.trim();
-  const pw2 = document.getElementById("passwordConfirm").value.trim();
+  //const pw = document.getElementById("password").value.trim();
+  //const pw2 = document.getElementById("passwordConfirm").value.trim();
   const phone2 = document.querySelector('input[name="phone2"]').value.trim();
   const phone3 = document.querySelector('input[name="phone3"]').value.trim();
   const email = document.getElementById('email').value.trim();
 
   // 필수 항목 검사
-  if (!pw || !pw2 || !phone2 || !phone3 || !email) {
+  //if (!pw || !pw2 || !phone2 || !phone3 || !email) {
+  if (!phone2 || !phone3 || !email) {
     alert('모든 필수 항목을 입력해주세요.');
     return;
   }
 
   // 비밀번호 확인 일치 여부
-  if (pw !== pw2) {
-    alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
-    return;
-  }
+  //if (pw !== pw2) {
+  //  alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+  //  return;
+  //}
 
   // 유효성 통과 → 제출
   document.querySelector('form[name="updateForm"]').submit();
