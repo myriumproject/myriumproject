@@ -29,11 +29,20 @@ public interface OrderMapper {
 	int getValidOrderTotalAmount(Long orderId);
 
 	// 교환,환불 버튼처리
-	void updateOrderStatus(@Param("orderId") Long orderId, @Param("productId") int productId,
-			@Param("orderStatus") int orderStatus);
+	int countOrderItems(Long orderId);
+	int countOrderItemsByStatus(Long orderId, int status);
+	boolean existsItemWithStatus(Long orderId, int status);
 
-	void updateOrdersStatus(@Param("orderId") Long orderId, @Param("orderStatus") int orderStatus);
+	// 기존
+	void updateOrderStatus(@Param("orderId") Long orderId,
+	                       @Param("productId") int productId,
+	                       @Param("orderStatus") int orderStatus);
+	void updateOrdersStatus(@Param("orderId") Long orderId,
+	                        @Param("orderStatus") int orderStatus);
 
+	// 플래그를 1/0으로 직접 세팅하도록 변경
+	void updateExchangeFlag(@Param("orderId") Long orderId, @Param("flag") int flag);
+	void updateRefundFlag(@Param("orderId") Long orderId, @Param("flag") int flag);
 	// 교환,환불 신청여부
 	void updateRefundFlag(@Param("orderId") Long orderId);
 

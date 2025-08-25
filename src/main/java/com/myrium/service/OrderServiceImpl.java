@@ -71,20 +71,27 @@ public class OrderServiceImpl implements OrderService {
     }
     
     //교환,환불버튼처리
+    @Transactional
     @Override
     public void updateOrderStatus(Long orderId, int productId, int orderStatus) {
-        // 1. 상품 상태 업데이트
+        // 1) 라인(상품) 상태만 바꾼다
         orderMapper.updateOrderStatus(orderId, productId, orderStatus);
 
-        // 2. 주문 상태 업데이트
-        orderMapper.updateOrdersStatus(orderId, orderStatus);
-
-        // 3. 환불/교환 신청 여부 업데이트
-        if (orderStatus == 4) { // 교환 신청
-            orderMapper.updateExchangeFlag(orderId);
-        } else if (orderStatus == 6) { // 환불 신청
-            orderMapper.updateRefundFlag(orderId);
+        // 2) 주문 헤더는 '모든 라인 상태가 동일할 때만' 동기화 (부분취소 보호)
+        int total = orderMapper.countOrderItems(orderId);
+        int same  = orderMapper.countOrderItemsByStatus(orderId, orderStatus);
+        if (total > 0 && same == total) {
+            // 전부 같은 상태가 되었을 때만 헤더 상태를 맞춘다
+            orderMapper.updateOrdersStatus(orderId, orderStatus);
         }
+        // (선택) 전혀 바꾸고 싶지 않으면 위 if 블록 자체를 제거
+
+        // 3) 교환/환불 플래그는 '하나라도 존재하면 1, 아니면 0'으로 집계
+        //    (기존처럼 무조건 1로 세팅하면, 다른 라인 때문에 상태가 엇갈릴 때 불일치 발생)
+        boolean hasExchange = orderMapper.existsItemWithStatus(orderId, 4); // 교환신청
+        boolean hasRefund   = orderMapper.existsItemWithStatus(orderId, 6); // 반품신청
+        orderMapper.updateExchangeFlag(orderId, hasExchange ? 1 : 0);
+        orderMapper.updateRefundFlag(orderId, hasRefund ? 1 : 0);
     }
     
     //교환,환불 완료처리 주문상태변경

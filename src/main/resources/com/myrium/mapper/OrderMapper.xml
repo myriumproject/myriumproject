@@ -356,4 +356,37 @@
 	     AND updated_at <= SYSDATE - 1
 	  ]]>
 	</update>
+	
+	<!-- 일부상품 취소요청 -->
+	<update id="updateOrderItemStatus">
+	  UPDATE orders_product
+	     SET order_status = #{orderStatus}
+	   WHERE orders_id  = #{orderId}
+	     AND product_id = #{productId}
+	</update>
+	<!-- 총 라인 수 -->
+<select id="countOrderItems" parameterType="long" resultType="int">
+  SELECT COUNT(*)
+    FROM orders_product
+   WHERE orders_id = #{orderId}
+</select>
+
+<!-- 특정 상태 라인 수 -->
+<select id="countOrderItemsByStatus" resultType="int">
+  SELECT COUNT(*)
+    FROM orders_product
+   WHERE orders_id = #{orderId}
+     AND order_status = #{status}
+</select>
+
+<!-- 특정 상태 라인이 ‘하나라도 있는지’ -->
+<select id="existsItemWithStatus" resultType="int">
+  SELECT CASE WHEN EXISTS (
+           SELECT 1
+             FROM orders_product
+            WHERE orders_id = #{orderId}
+              AND order_status = #{status}
+         ) THEN 1 ELSE 0 END
+    FROM dual
+</select>
 </mapper>
