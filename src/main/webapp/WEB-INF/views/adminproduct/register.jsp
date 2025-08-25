@@ -3,7 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 
-<%@include file="../main/header.jsp"%>
 <%@include file="../includes_admin/header.jsp"%>
 
 <!DOCTYPE html>
@@ -36,6 +35,9 @@
 
 </head>
 <body>
+<%@include file="../main/header.jsp"%>
+<div style="width:1240px; margin:0 auto;">
+
 	<div class="row">
 		<div class="col-lg-12">
 			<h1 class="page-header">신규 상품 등록<span class="badge">관리자</span></h1>
@@ -84,8 +86,6 @@
 						        </label>
 						    </div>
 						</div>
-						
-						<!-- <input type="hidden" name="category" id="selectedCategory"> -->
 						
 						<div class="form-group">
 						    <label class="required">전시영역</label>
@@ -173,7 +173,7 @@
 							</div>
 						</div>
 						
-				        <div class="form-group">
+				        <!-- <div class="form-group">
 				            <label>(※)배송비(원)</label>
 				            <input type="number" name="delivery_fee" value="3500" class="form-control">
 				        </div>
@@ -181,38 +181,25 @@
 				        <div class="form-group">
 				            <label>(※)발송기한(일)</label>
 				            <input type="number" name="delivery_days" value="3" class="form-control">
-				        </div>
+				        </div> -->
 				
 						<div class="form-group">
 						    <label>(※)기초재고수량(개)</label>
 						    <input type="number" name="product_stock" id="product_stock" value="" class="form-control" min="0">
 						</div>
 						
-						<div class="form-group">
+						<!-- <div class="form-group">
 						    <label>상품상태</label>
 						    <select name="product_status" id="product_status" class="form-control">
 						        <option value="0">판매중지</option>
 						        <option value="1">정상</option>
 						        <option value="2">품절</option>
 						    </select>
-						</div>	
-			     			        
-				        <!--  <div class="form-group">
-				            <label class="required">상품 이미지 (최대 10장)</label>
-				            <input type="file" name="thumbnailImages" multiple accept="image/*">
-				            <small>썸네일로 사용할 이미지는 체크하세요.</small><br>
-				            <input type="checkbox" name="thumbnailCheck"> 썸네일 여부
-				        </div>
-				
-				        <div class="form-group">
-				            <label>상품설명 이미지 (최대 5장)</label>
-				            <input type="file" name="detailImages" multiple accept="image/*">
-				        </div> -->
-				        
-				        
+						</div>	  -->
+        
 						<!-- 업로드 영역 -->
 						<div class="form-group">
-							<label class="form-label"><strong>상품 이미지 (최대 10장)</strong></label>
+							<h4><label class="form-label"><strong>상품 이미지 (최대 10개)</strong></label></h4>
 							<!-- 설명 문구 -->
 							<p class="text-muted small mb-2">
 								※ 상품 이미지는 <strong>10개</strong> 까지 업로드할 수 있습니다.<br>
@@ -229,10 +216,10 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="form-label"><strong>상품상세정보 이미지 (최대 5장)</strong></label>
+							<h4><label class="form-label"><strong>상품상세정보 이미지 (최대 2개)</strong></label></h4>
 							<!-- 설명 문구 -->
 							<p class="text-muted small mb-2">
-								※ 상품상세정보 이미지는 <strong>5개</strong> 까지 업로드할 수 있습니다.<br>
+								※ 상품상세정보 이미지는 <strong>2개</strong> 까지 업로드할 수 있습니다.<br>
 								※ 여러 파일을 선택하려면 <strong>Ctrl 키</strong>를 누른 상태에서 클릭하세요.<br>
 								※ <strong>등록 전에 반드시 업로드</strong>해야 합니다.
 							</p>
@@ -249,6 +236,7 @@
 						
 						<div class="text-right mt-3">
 							<button type="submit" class="btn btn-success">등록</button>
+							<button type="button" class="btn btn-info" id="listBtn">목록</button>
 							<button type="reset" class="btn btn-warning" id="resetBtn">다시작성</button>
 						</div>
 					</form>
@@ -256,7 +244,7 @@
 			</div>
 		</div>
 	</div>
-
+</div>
 <!-- jQuery -->
 <script src="/resources/bsAdmin2/resources/vendor/jquery/jquery.min.js"></script>
 <script src="/resources/js/RegisterUploadManager.js"></script>
@@ -275,8 +263,7 @@ $(document).ready(function () {
       const box = document.getElementById("timesales_fields");
       const selected = this.value;
       box.style.display = (selected === "1") ? "block" : "none";
-  });
-  
+  });  
   
   const priceInput = document.querySelector('input[name="product_price"]');
   const discountSelect = document.getElementById('is_discount');
@@ -297,10 +284,11 @@ $(document).ready(function () {
       const timesaleRate = timesaleSelect.value === "1" ? (parseFloat(timesaleRateInput.value) || 0) : 0;
 
       const totalRate = discountRate + timesaleRate;
-      const finalPrice = Math.round(price * (1 - totalRate / 100));
+      const discountedPrice = Math.floor(price * (1 - totalRate / 100));
+      const finalPrice = Math.floor(discountedPrice / 10) * 10; // 10원 단위 절삭
 
       totalRateInput.value = totalRate;
-      //finalPriceInput.value = finalPrice.toLocaleString();
+
       finalPriceInput.value = finalPrice;
   }
   
@@ -320,38 +308,25 @@ $(document).ready(function () {
 	  });
 	
 	  // 재고수량 입력값 감지 후 상품상태 자동 변경
-	  document.getElementById('product_stock').addEventListener('input', function() {
-	    const stockValue = parseInt(this.value) || 0;
-	    const statusSelect = document.getElementById('product_status');
+	  //document.getElementById('product_stock').addEventListener('input', function() {
+	  //  const stockValue = parseInt(this.value) || 0;
+	  //  const statusSelect = document.getElementById('product_status');
 
-	    if (stockValue > 0) {
-	      statusSelect.value = "1";  // 정상
-	    } else if (stockValue === 0) {
-	      statusSelect.value = "2" ;  // 품절
-	    } 
-	  });
+	  //  if (stockValue > 0) {
+	  //    statusSelect.value = "1";  // 정상
+	  //  } else if (stockValue === 0) {
+	  //    statusSelect.value = "2" ;  // 품절
+	  //  } 
+	  //});
 	  
 	  // 페이지 로딩 후 초기화
 	  toggleFields();
 	  calculateDiscount();
   
-
-  // 선택된 파일 리스트를 전역에서 관리
-  //let selectedImgsThumbnail = [];
-  //let selectedImgsDetail = [];
-  //let uploadedThumbnailList = []; // 썸네일 업로드 완료된 파일 정보
-  //let uploadedDetailList = []; // 상품상세정보 업로드 완료된 파일 정보
-  //let uploadCompletedThumbnail = false; // 썸네일 업로드 완료 여부 flag
-  //let uploadCompletedDetail = false; // 상품상세정보 업로드 완료 여부 flag
-
   // 업로드 버튼 처음에 숨김
   $("#uploadBtnThumbnail").hide(); 
   $("#uploadBtnDetail").hide(); 
-  
 
-
-
-  
   $("button[type='reset']").on("click", function() {
     if (attachList.length > 0) {
     	attachList.forEach(function (file) {
@@ -388,6 +363,8 @@ $(document).ready(function () {
 	  $("#uploadInputDetail").val(''); // 파일 input 초기화 (필수)
 	  $("#uploadBtnThumbnail").hide(); // 업로드 숨김
 	  $("#uploadBtnDetail").hide(); // 업로드 숨김
+	  $("#uploadInputThumbnail").show();
+	  $("#uploadInputDetail").show();
 	});
   
 
@@ -395,18 +372,13 @@ $(document).ready(function () {
   $("form").on("submit", function (e) {
 	e.preventDefault();
 	isSubmitting = true;  
-	//const checkedCategories = $("input.category:checked");
-	//const checkedCategories = $("input[type='checkbox'][name='gardening'],input[name='plantkit'],input[name='hurb'],input[name='vegetable'],input[name='flower'],input[name='etc']").filter(":checked");
     const product_name = $("input[name='product_name']").val().trim();
     const product_price = $("input[name='product_price']").val().trim();
-    const delivery_fee = $("input[name='delivery_fee']").val().trim();
-    const delivery_days = $("input[name='delivery_days']").val().trim();
-    const product_stock = $("input[name='product_stock']").val().trim();
-
-    
-    
+    //const delivery_fee = $("input[name='delivery_fee']").val().trim();
+    //const delivery_days = $("input[name='delivery_days']").val().trim();
+    const product_stock = $("input[name='product_stock']").val().trim();    
     const checkedCount = $("input[type='checkbox']:checked").length;
-    console.log("checkedCategories:" + checkedCount);
+    
     if (checkedCount === 0) {
       alert("카테고리를 하나 이상 선택해주세요.");
       e.preventDefault();
@@ -427,19 +399,19 @@ $(document).ready(function () {
       return;
     }
     
-    if (!delivery_fee) {
-      alert("배송비를 입력해주세요.");
-      $("input[name='delivery_fee']").focus();
-      e.preventDefault();
-      return;
-    }
+    //if (!delivery_fee) {
+    //  alert("배송비를 입력해주세요.");
+    //  $("input[name='delivery_fee']").focus();
+    //  e.preventDefault();
+    //  return;
+    //}
     
-    if (!delivery_days) {
-      alert("배송기한를 입력해주세요.");
-      $("input[name='delivery_days']").focus();
-      e.preventDefault();
-      return;
-    }
+    //if (!delivery_days) {
+    //  alert("배송기한를 입력해주세요.");
+    //  $("input[name='delivery_days']").focus();
+    //  e.preventDefault();
+    //  return;
+    //}
     
     if (!product_stock) {
       alert("기초재고수량를 입력해주세요.");
@@ -472,6 +444,9 @@ $(document).ready(function () {
     $("form").off("submit").submit();
   });
   
+  document.getElementById("listBtn").addEventListener("click", function() {
+	    window.history.back();
+	  });  
   
   // 뒤로가기 시 업로드 된 파일 삭제
 	window.addEventListener("beforeunload", function (e) {
@@ -482,25 +457,24 @@ $(document).ready(function () {
 	    }
 	});
   
-	  const uploadThumbnailManager = new UploadManager({
-		    inputId: "uploadInputThumbnail",
-		    buttonId: "uploadBtnThumbnail",
-		    maxCount: 10,
-		    regex: /(.*?)\.(exe|sh|zip|alz)$/i,
-		    maxSize: 5242880,
-		    type: "Thumbnail"
-		    //productId: $("input[name='product_id']").val()
-		  });
-
-	  const uploadDetailManager = new UploadManager({
-	    inputId: "uploadInputDetail",
-	    buttonId: "uploadBtnDetail",
-	    maxCount: 5,
+  // 매니져 클래스 생성
+	 const uploadThumbnailManager = new UploadManager({
+	    inputId: "uploadInputThumbnail",
+	    buttonId: "uploadBtnThumbnail",
+	    maxCount: 10,
 	    regex: /(.*?)\.(exe|sh|zip|alz)$/i,
 	    maxSize: 5242880,
-	    type: "Detail"
-	    //productId: $("input[name='product_id']").val()
+	    type: "Thumbnail"
 	  });
+	
+	 const uploadDetailManager = new UploadManager({
+	   inputId: "uploadInputDetail",
+	   buttonId: "uploadBtnDetail",
+	   maxCount: 2,
+	   regex: /(.*?)\.(exe|sh|zip|alz)$/i,
+	   maxSize: 5242880,
+	   type: "Detail"
+	 });
 
 });
 </script>

@@ -62,7 +62,8 @@ public class OrderServiceImpl implements OrderService {
     
     @Override
     public List<OrderDTO> getOrderDetail(Long orderId) {
-        return orderMapper.findOrderDetailById(orderId);
+        List<OrderDTO> list = orderMapper.findOrderDetailById(orderId);
+        return (list != null) ? list : java.util.Collections.emptyList();
     }
     
     @Override
@@ -74,6 +75,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void updateOrderStatus(Long orderId, int productId, int orderStatus) {
+<<<<<<< HEAD
         // 1) 라인(상품) 상태만 바꾼다
         orderMapper.updateOrderStatus(orderId, productId, orderStatus);
 
@@ -92,6 +94,35 @@ public class OrderServiceImpl implements OrderService {
         boolean hasRefund   = orderMapper.existsItemWithStatus(orderId, 6); // 반품신청
         orderMapper.updateExchangeFlag(orderId, hasExchange ? 1 : 0);
         orderMapper.updateRefundFlag(orderId, hasRefund ? 1 : 0);
+=======
+        // 1) 라인 변경
+        if (productId > 0) {
+            // 부분 취소/환불: 해당 상품 라인만
+            orderMapper.updateOrderStatus(orderId, productId, orderStatus);
+
+            // 2) 헤더는 '모든 라인'이 같은 상태일 때만 변경
+            int total = orderMapper.countOrderLines(orderId);
+            int same  = orderMapper.countOrderLinesWithStatus(orderId, orderStatus);
+            if (total > 0 && same == total) {
+                orderMapper.updateOrdersStatus(orderId, orderStatus);
+            }
+
+        } else {
+            // 전체 취소/환불: 모든 라인 + 헤더 동시 변경
+            orderMapper.updateAllOrderLines(orderId, orderStatus);
+            orderMapper.updateOrdersStatus(orderId, orderStatus);
+        }
+
+        // 3) 플래그(주문 단위)
+        if (orderStatus == 4) {           // 교환 신청
+            orderMapper.updateExchangeFlag(orderId);
+        } else if (orderStatus == 6) {    // 환불 신청
+            orderMapper.updateRefundFlag(orderId);
+        }
+
+        log.info(String.format("updateOrderStatus: orderId=%d, productId=%d, status=%d",
+                orderId, productId, orderStatus));
+>>>>>>> main
     }
     
     //교환,환불 완료처리 주문상태변경
@@ -132,11 +163,12 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	 @Override
-	    @Transactional
 	    public int autoConfirmAfter1Day() {
-	        int changed = orderMapper.autoConfirmAfter1Day();
-	        log.info("[OrderService] autoConfirmAfter1Day updated rows = " + changed);
-	        return changed;
+	        int a = orderMapper.autoConfirmOrders();
+	        int b = orderMapper.autoConfirmOrderProducts();
+	        return a + b; // 합계 로그 확인용
 	    }
+
+
 	
 }

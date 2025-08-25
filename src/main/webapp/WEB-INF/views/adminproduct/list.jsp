@@ -4,14 +4,23 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <jsp:useBean id="now" class="java.util.Date" />
 
-<%@include file="../main/header.jsp"%>
 <%@include file="../includes_admin/header.jsp"%>
 
 <style>
   .category-label {
     display: inline-block;
     margin: 1px;
+  }  
+  
+  table.table td, table.table th {
+      vertical-align: middle !important;
+      text-align: center;
   }
+  
+    table.table {
+      font-size: 13px;
+  }
+  
 </style>
 
 <!-- 뒤로가기 시 조회수 증가를 위해 새로고침 -->
@@ -25,6 +34,8 @@
 </script>
 
 <body>
+<%@include file="../main/header.jsp"%>
+<div style="width:1240px; margin:0 auto;">
 	<div class="row">
 		<div class="col-lg-12">
 			<h1 class="page-header">상품관리<span class="badge">관리자</span></h1>
@@ -41,7 +52,7 @@
 				<sec:authorize access="hasAuthority('ADMIN')">
 					<div class="panel-heading">
 						새상품은 상품등록을 클릭하고 등록하세요.
-						<button id='regBtn' type="button" class="btn btn-info">작성</button>
+						<button id='regBtn' type="button" class="btn btn-info">상품등록</button>
 					</div>
 					<div class="panel-heading">
 						<span class="badge">NEW</span> 최근 3일 이내에 등록된 새로운 상품 입니다.
@@ -50,14 +61,8 @@
 
 				<!-- /.panel-heading -->
 				<div class="panel-body">
-					    <!-- 필터링 섹션 -->
+					<!-- 필터링 섹션 -->
 				    <form action="/adminproduct/list" method="get" class="form-inline" style="margin-bottom:10px;">
-				        <!-- <select name="category" class="form-control">
-				            <option value="">카테고리</option>
-				            <c:forEach var="cat" items="${categories}">
-				                <option value="${cat}" <c:if test="${param.category == cat}">selected</c:if>>${cat}</option>
-				            </c:forEach>
-				        </select> -->
 				        <select name="category" class="form-control">
 						    <option value= "">카테고리</option>
 						    <option value="원예용품" <c:if test="${param.category == '원예용품'}">selected</c:if>>원예용품</option>
@@ -78,17 +83,16 @@
 				            <option value= 0 <c:if test="${param.is_timesales == 0}">selected</c:if>>없음</option>
 				        </select>
 				        <select name="is_deleted" class="form-control">
-				            <option value= -1>노출여부</option>
-				            <option value= 0 <c:if test="${param.is_deleted == 0}">selected</c:if>>노출</option>
+				            <option value= -1>전시여부</option>
+				            <option value= 0 <c:if test="${param.is_deleted == 0}">selected</c:if>>전시중</option>
 				            <option value= 1 <c:if test="${param.is_deleted == 1}">selected</c:if>>비노출</option>
 				        </select>
 				        <button type="submit" class="btn btn-primary">필터</button>
 				        <button type="button" class="btn btn-info" onclick="location.href='/adminproduct/list'">필터 초기화</button>
-
 				    </form>
 				
 				    <!-- 상품 테이블 -->
-				    <table class="table table-bordered table-hover">
+				    <table style="width:100%;" class="table table-striped table-bordered table-hover" id="dataTables-example">
 				        <thead>
 				            <tr>
 				                <th class="text-center">상품번호</th>
@@ -103,7 +107,7 @@
 				                <th class="text-center">타임세일</th>
 				                <th class="text-center">(타임세일)할인율</th>
 				                <th class="text-center">노출</th>
-				                <th class="text-center">관리</th>
+				                <th class="text-center" style="width:169px;">관리</th>
 				            </tr>
 				        </thead>
 				        <tbody>
@@ -131,11 +135,11 @@
 				                    <td class="text-right">${product.product.product_stock}</td>
 				                    <td class="text-right"><fmt:formatNumber value="${product.product.product_price}" pattern="#.##"/></td>
 				                    <td class="text-right"><fmt:formatNumber value="${product.product.discount_price}" pattern="#.##"/></td>
-				                    <td class="text-center">${product.product.is_discount ==1 ? '<span class="label label-success ml-1">할인중</span>' : '없음'}</td>
+				                    <td class="text-center">${product.product.is_discount ==1 ? '<span class="label label-success ml-1">할인중</span>' : '<span class="label label-default">없음</span>'}</td>
 				                    <td class="text-right">${product.product.discount_rate}%</td>
-				                    <td class="text-center">${product.product.is_timesales == 1 ? '<span class="label label-success ml-1">할인중</span>' : '없음'}</td>
+				                    <td class="text-center">${product.product.is_timesales == 1 ? '<span class="label label-success ml-1">할인중</span>' : '<span class="label label-default">없음</span>'}</td>
 				                    <td class="text-right">${product.product.timesalediscount_rate}%</td>
-				                    <td class="text-center">${product.product.is_deleted == 0 ? '<span class="label label-success ml-1">전시중</span>' : '비노출'}</td>
+				                    <td class="text-center">${product.product.is_deleted == 0 ? '<span class="label label-success ml-1">전시중</span>' : '<span class="label label-default">비노출</span>'}</td>
 				                    <td>
 				                        <button class="btn btn-sm btn-primary" onclick="location.href='/adminproduct/modify?id=${product.product.id}'">수정</button>
 				                        <c:choose>
@@ -157,16 +161,18 @@
 					<!-- 검색조건 -->
 					<div class='row'>
 						<div class="col-lg-12">
-							<form id='searchForm' action="/adminproduct/list" method='get'>
-								<!-- <select name='type' >
+							<form id='searchFormProduct' action="/adminproduct/list" method='get'>
+								<select name='type' >
+									<!-- <option value="" <c:out value="${pageMaker.cri.type == null?'selected':''}"/>>선택하세요</option> -->
 									<option value="T" <c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>상품명</option>
-								</select> --> 
-								<input type='hidden' name='type' value="T" />
+								</select> 
 								<input type='text' name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
 								<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
-								<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
-
-								
+								<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />									
+							    <input type="hidden" name="category" value="${pageMaker.cri.category}">
+								<input type="hidden" name="is_discount" value="${pageMaker.cri.is_discount}" />
+								<input type="hidden" name="is_timesales" value="${pageMaker.cri.is_timesales}" />
+								<input type="hidden" name="is_deleted" value="${pageMaker.cri.is_deleted}" />						
 								<button type="submit" class="btn btn-sm btn-primary">
 									<i class="fa fa-search"></i> 상품검색
 								</button>
@@ -231,7 +237,7 @@
 			</div>
 		</div>
 	</div>
-
+</div>
 <!-- jQuery -->
 <script src="/resources/bsAdmin2/resources/vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript">
@@ -278,26 +284,26 @@ $(document).ready(function(){
 		actionForm.find("input[name='id']").remove(); //뒤로가기 후 기존 파라미터 누적문제 해결
 		
 		actionForm.append("<input type='hidden' name='id' value='" + $(this).attr("href") + "'>");
-		actionForm.attr("action","/adminproduct/modify");
+		actionForm.attr("action","/sub");
 		actionForm.submit();
 	});
 	
-	var searchForm = $("#searchForm");
+	var searchFormProduct = $("#searchFormProduct");
 
-	$("#searchForm button").on("click", function(e){
-		//if(!searchForm.find("option:selected").val()){
-		//	alert("검색종류를 선택하세요");
-		//	return false;
-		//}
+	$("#searchFormProduct button").on("click", function(e){
+		if(!searchFormProduct.find("option:selected").val()){
+			alert("검색종류를 선택하세요");
+			return false;
+		}
 
-		//if(!searchForm.find("input[name='keyword']").val()){
-		//	alert("키워드를 입력하세요");
-		//	return false;
-		//}
-		searchForm.find("input[name='pageNum']").val("1");
+		if(!searchFormOrder.find("input[name='keyword']").val()){
+			alert("키워드를 입력하세요");
+			return false;
+		}
+		searchFormProduct.find("input[name='pageNum']").val("1");
 		e.preventDefault();
 		
-		searchForm.submit();
+		searchFormProduct.submit();
 		
 	});
     
@@ -335,7 +341,7 @@ $(document).ready(function(){
 	                location.reload();
 	            },
 	            error: function () {
-	                alert("글내림 실패");
+	                alert("상품 비노출 실패");
 	            }
 	        });
 	    }

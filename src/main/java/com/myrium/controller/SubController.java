@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.myrium.domain.BoardVO;
 import com.myrium.domain.ProductDTO;
 import com.myrium.domain.ReviewDTO;
+import com.myrium.service.AdminBoardService;
 import com.myrium.service.ProductService;
 import com.myrium.service.ReviewService;
 
@@ -25,8 +27,8 @@ import lombok.extern.log4j.Log4j;
 @RequiredArgsConstructor
 public class SubController {
 
-	private final ProductService productservice;
-	
+	//private final ProductService productservice;
+	private final AdminBoardService adminboardservice;
 	@Autowired
 	private ProductService productService;
 	
@@ -74,6 +76,12 @@ public class SubController {
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("totalPages", totalPages);
 
+	    // 문의하기
+	    List<BoardVO> boardList = adminboardservice.getBoardList(productId);
+	    log.info(boardList);
+	    
+	    model.addAttribute("boardList", boardList);
+	    
 	    return "sub/sub";
 	}
 }

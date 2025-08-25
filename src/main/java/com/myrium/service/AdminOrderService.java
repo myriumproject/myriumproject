@@ -7,25 +7,10 @@ import com.myrium.domain.OrderDTO;
 
 public interface AdminOrderService {
 	
-	   public void register(OrderDTO dto);	   
+	   public List<OrderDTO> getOrderList(Criteria cri);
 	   
-	   public boolean modify(OrderDTO dto);
-	   
-	   public boolean harddel(int id);
-	
-	   public boolean softdel(int id);
-	   
-	   public List<OrderDTO> getList();
-	   
-	   //public List<OrderDTO> getOrderListWithProduct(Criteria cri, boolean isAdmin);
-	   public List<OrderDTO> getOrderList(Criteria cri, boolean isAdmin);
-	   
-	   public int getTotal(Criteria cri, boolean isAdmin);
+	   public int getTotal(Criteria cri);
 
-	   public boolean restore(int id);
-  
-	   public OrderDTO get(int id);
-
-	   public void updateOrderStatus(String ordersId, int ordersProductId, int orderStatus);
+	   public void updateOrderStatus(int ordersId, int ordersProductId, int orderStatus);
 	   
 }

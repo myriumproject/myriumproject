@@ -129,9 +129,12 @@
 								<!-- 주문 상품들 -->
 								<c:forEach var="order" items="${orders}">
 									<div class="order-content">
-										<img src="${pageContext.request.contextPath}/upload/${order.img_path}" alt="${order.productName}_img" class="product-img">
+										<a href="${pageContext.request.contextPath}/sub?id=${order.productId}"> <img src="${pageContext.request.contextPath}/upload/${order.img_path}" alt="${order.productName}_img" class="product-img">
+										</a>
 										<div class="product-info">
-											<p class="product-title">${order.productName}</p>
+											<p class="product-title">
+												<a href="${pageContext.request.contextPath}/sub?id=${order.productId}">${order.productName}</a>
+											</p>
 											<p class="product-price">
 												<fmt:formatNumber value="${order.discount_price}" pattern="#,###" />
 												원 (${order.quantity}개)
@@ -144,7 +147,7 @@
 								<div class="order-status-bar">
 									<div class="status-text">${orders[0].orderStatusText}</div>
 									<div class="status-buttons">
-										<c:if test="${orders[0].orderStatus == 3}">
+										<c:if test="${orders[0].orderStatus == 3 || orders[0].orderStatus == 18}">
 											<button onclick="location.href='${pageContext.request.contextPath}/mypage/review?orderId=${orders[0].id}&productId=${orders[0].productId}'">구매후기</button>
 										</c:if>
 										<button class="order-btn">배송조회</button>
