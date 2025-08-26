@@ -4,10 +4,6 @@
 <p align="center">JSP와 Servlet 기반으로 구현된 동적 웹 프로젝트</p>
 <br/>
 
-<details><summary>아코디언 예시입니다.</summary>
-  예시 입니까?
-
-  진짜 예시입니다.
 </details>
 
 ## 📌 목차
@@ -25,28 +21,107 @@
 
 ## 🛠️ 기술 스택
 - Language : `JAVA(11)`, `JavaScript(1.5)`
-- Framework / Library: `JSP(JavaServer Pages)(2.3)`, `Servlet(4.0)`, `JSTL`, `JDBC`,`DBManager`,`EL`,`jQuery`
-- Database : `Mysql(8.0)`
+- Framework / Library: `JSP(JavaServer Pages)(2.3)`, `JSTL`, `JDBC`,`DBManager`,`EL`,`jQuery`,`Lombok`
+- Database : `Oracle 11g XE (11.2.0.2.0)`
 - Server : `Apache Tomcat(9.0.70)`
-- Tool : `Eclipse IDE (4.29.0)`
-- API : `Kakao Book Search API`
-- ETC : `Git`
+- Tool : `Spring Tool Suite 3`
+- API : `Daum postCode API`
+- ETC : `Git`, `google Sheets`, `draw.io`, `erdCloud`, `sourcetree`
 
 ## 🧩 프로젝트 설계
-<h3 align="center">Usecase Diagram</h3>
 
-유스케이스 다이어그램 사진
+<details><summary><h3 align="center">Usecase Diagram</h3></summary>
+<img width="1128" height="790" alt="481296084-728d4a85-0932-4a82-9524-97cdfa095230" src="https://github.com/user-attachments/assets/716f55e6-3f78-49a4-a3d9-e2c08a8ed390" />
+</details>
 
-<h3 align="center">ERD</h3>
+<details><summary><h3 align="center">ERD</h3></summary>
+<img width="2733" height="1886" alt="Myrium erd" src="https://github.com/user-attachments/assets/888cae06-4c6a-4435-bd6c-eeda52ab09a2" />
+</details>
+  
+<details><summary><h3 align="center">Class Diagram</h3></summary>
+<h4>UploadController</h4>
+<img width="2200" height="1347" alt="Diagram_UploadController" src="https://github.com/user-attachments/assets/95f413e3-6508-44ee-bc83-0cdf7372487c" />
+<h4>TotalReviewController<h4>
+<img width="1271" height="724" alt="Diagram_TotalReviewController" src="https://github.com/user-attachments/assets/dbb13257-40bb-40d2-9867-9bc67c14041d" />
+<h4>SubController</h4>
+<img width="2234" height="1259" alt="Diagram_SubController" src="https://github.com/user-attachments/assets/63e078eb-4fbd-488d-b62b-bbbadb3b3a0e" />
+<h4>SearchController</h4>
+<img width="1602" height="1185" alt="Diagram_SearchController" src="https://github.com/user-attachments/assets/c6a32127-e257-4edb-be40-6096fcae2cc1" />
+<h4>ReviewController</h4>
+<img width="2082" height="2085" alt="Diagram_ReviewController" src="https://github.com/user-attachments/assets/72f3a7c4-f4ed-4ef5-9ad1-434e8f8edfd0" />
+<h4>ReplyController</h4>
+<img width="1509" height="916" alt="Diagram_ReplyController" src="https://github.com/user-attachments/assets/4785b72d-5ece-4531-8113-1b72af856008" />
+<h4>PurchaseController</h4>
+<img width="2314" height="2085" alt="Diagram_PurchaseController" src="https://github.com/user-attachments/assets/b667aba8-2544-4419-beee-f87191dc0e91" />
+<h4>OrderdetailController</h4>
+<img width="1209" height="1138" alt="Diagram_OrderdetailController" src="https://github.com/user-attachments/assets/23629644-65fd-427a-ba63-0d745d10b7f2" />
+<h4>MypageController</h4>
+<img width="1170" height="1208" alt="Diagram_MypageController" src="https://github.com/user-attachments/assets/b71c2c5b-5a30-4c6f-8943-7c2189cd4a99" />
+<h4>MemberupdateController</h4>
+<img width="1475" height="1119" alt="Diagram_MemberupdateController" src="https://github.com/user-attachments/assets/c41d3ba2-3da9-4512-ba2e-96fe92999f52" />
+<h4>MemberRestController</h4>
+<img width="1281" height="1069" alt="Diagram_MemberRestController" src="https://github.com/user-attachments/assets/6e85674c-c6fa-415b-b4f8-c66b8209d104" />
+<h4>MemberController</h4>
+<img width="1932" height="747" alt="Diagram_MemberController" src="https://github.com/user-attachments/assets/a7885bfd-8a0a-465d-850c-6c44a521e04e" />
+<h4>JoinController</h4>
+<img width="1410" height="851" alt="Diagram_JoinController" src="https://github.com/user-attachments/assets/354d0199-7771-4a95-b8bb-a7cfa15d1484" />
+<h4>HomeController</h4>
+<img width="1614" height="1330" alt="Diagram_HomeController" src="https://github.com/user-attachments/assets/537ff07b-6190-41de-a97a-6acec7f8c7c4" />
+<h4>FindpwController</h4>
+<img width="1380" height="927" alt="Diagram_FindpwController" src="https://github.com/user-attachments/assets/2c90fa72-2c4b-4850-a593-5b173c09bc97" />
+<h4>FindidController</h4>
+<img width="1463" height="1016" alt="Diagram_FindidController" src="https://github.com/user-attachments/assets/d10db07d-b6d8-445e-9751-ff04e4a69b23" />
+<h4>EtcController</h4>
+<img width="1156" height="576" alt="Diagram_EtcController" src="https://github.com/user-attachments/assets/0b5ba722-2752-456a-a183-6dac795fd5c6" />
+<h4>CategoryPageController</h4>
+<img width="1675" height="1191" alt="Diagram_CategoryPageController" src="https://github.com/user-attachments/assets/6e3c099b-3f25-4cdb-a017-7d8247bb85a2" />
+<h4>CartController</h4>
+<img width="1958" height="1352" alt="Diagram_CartController" src="https://github.com/user-attachments/assets/c6afbfb7-04d0-406c-a0e5-74f9bca70d57" />
+<h4>AdminReviewController</h4>
+<img width="1356" height="978" alt="Diagram_AdminReviewController" src="https://github.com/user-attachments/assets/e189804b-4f76-479c-8d75-3074f949c0c0" />
+<h4>AdminProductController</h4>
+<img width="1954" height="1348" alt="Diagram_AdminProductController" src="https://github.com/user-attachments/assets/c0eecd98-7b29-40da-9d70-9a2d2638dfb5" />
+<h4>AdminOrderController</h4>
+<img width="1367" height="951" alt="Diagram_AdminOrderController" src="https://github.com/user-attachments/assets/9d46a3aa-d5d5-47a7-b880-102180798df2" />
+<h4>AdminNoticeController</h4>
+<img width="1642" height="904" alt="Diagram_AdminNoticeController" src="https://github.com/user-attachments/assets/7f82b528-73ea-4612-afb5-d38c51c161df" />
+<h4>AdminMemberController</h4>
+<img width="1656" height="991" alt="Diagram_AdminMemberController" src="https://github.com/user-attachments/assets/ed83d685-bea2-42ce-b190-471321abd429" />
+<h4>AdminFaqController</h4>
+<img width="809" height="567" alt="Diagram_AdminFaqController" src="https://github.com/user-attachments/assets/c1c378c6-3086-4147-ab8e-f430d6b41a65" />
+<h4>AdminBoardController</h4>
+<img width="2361" height="1100" alt="Diagram_AdminBoardController" src="https://github.com/user-attachments/assets/7edb5e8d-b6d8-443f-9a1f-3b4263d580ee" />
+</details>
 
-erd 다이어그램 사진
+## 🖥️ 실행 화면
 
-<h3 align="center">Class Diagram</h3>
+<details>
+  <summary><h3 align="center">메인🖱️펼치기/접기</h3></summary>
+  
+  * **메인**    
+    * **1. 메인**
+      * 관리자가 정한 상품들을 메인화면에 선택하여 전시가 가능합니다.
+      * 타임세일의 경우 슬라이더로 표시되며, 다른 전시화면에서 타임세일 여부를 표시해줍니다.
+      * `상품더보기` 버튼을 클릭할시 상단 전시는 3개씩, 하단 전시는 4개씩 상품이 더 표시되며, 모두 표시되었을 경우 버튼이 사라집니다.
+<p align="center"><img src="https://github.com/user-attachments/assets/4c16c37a-8589-4adb-9d23-31de15f801d2"></p>
+</details>
 
-클래스 다이어그램 사진
+<details>
+  <summary><h3 align="center">🖱️클릭 : 회원</h3></summary>
+  
+  * **회원**    
+    * **2.1 회원가입**
+      * 회원가입 페이지에서 신규 회원 정보를 입력하여 계정을 생성할 수 있습니다.
+      * 기본정보(아이디, 비밀번호, 이름, 생년월일, 성별, 연락처, 이메일, 주소)를 입력합니다.
+      * 주소 입력 시 **카카오 주소 API**를 연동하여 정확한 주소 검색이 가능합니다.
+      * 비밀번호는 개인정보 보안을 위해 **암호화(Encryption)** 처리되어 DB에 저장됩니다.
+      * 입력 정보에 대해 **유효성 검사**를 진행한 후 DB에 저장됩니다.
+      * 약관 동의(필수/선택) 항목을 체크한 후에만 회원가입이 완료됩니다.  
+<p align="center"><img src="https://github.com/user-attachments/assets/8d7976ac-a774-4f95-808a-7b63e924ce88"></p>
+</details>
 
-
-## 🖥️ 실행 화면 --- 동영상 파일 넣을곳
+<details>
+  <summary><h3 align="center">🖱️클릭 : 회원</h3></summary></details>
 
 ## 🗂️ PPT ---- ppt 사진 넣을곳
 
